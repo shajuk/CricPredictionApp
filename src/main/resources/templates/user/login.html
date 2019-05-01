@@ -1,0 +1,35 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	 xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Sign In</title>
+		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" >
+	</head>
+	<body>
+		<div class="container">
+			<div class="alert alert-danger" role="alert" th:if="${param.error}">
+				Username or Password is incorrect !
+			</div>
+			<form th:action="@{/login}" method="post">
+				<h1 class="h3 mb-3 font-weight-normal">Sign In</h1>
+				<label for="inputUsername" class="sr-only">Username</label>
+				<input type="text" id="username" name="username" placeholder="enter employee id" class="form-control" required autofocus />
+				
+				<label for="inputPassword" class="sr-only">Username</label>
+				<input type="password" id="password" name="password" class="form-control" required autofocus />
+				
+				<div class="checkbox mb-3">
+					<label>
+						<input type="checkbox" name="remember-me" />Remember Me
+					</label>
+				</div>
+				<button class="btn btn-lg btn-primary btn-block" type="submit">Sign In</button>
+				<div class="margin-top20 text-center">Don't have an account?
+					<a th:href="@{/signup}">Create an account</a>
+				</div>
+			</form>
+		</div>
+	</body>
+</html>
