@@ -37,13 +37,22 @@ public class User {
 	@Column(name="active")
 	private int active;
 	
-	private String passwordConfirm;
+	@Column(name="location")
+	private String location;
 	
 	@ManyToMany(cascade=CascadeType.ALL)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles;
 
 	
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
 	public int getId() {
 		return id;
 	}
@@ -66,14 +75,6 @@ public class User {
 
 	public void setPassword(String password) {
 		this.password = password;
-	}
-
-	public String getPasswordConfirm() {
-		return passwordConfirm;
-	}
-
-	public void setPasswordConfirm(String passwordConfirm) {
-		this.passwordConfirm = passwordConfirm;
 	}
 
 	public Set<Role> getRoles() {

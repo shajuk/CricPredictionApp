@@ -13,6 +13,7 @@ create table `user`(
  id int(11) not null auto_increment,
  firstname varchar(255) not null,
  lastname varchar(255) not null,
+ location varchar(255) not null,
  username varchar(255) not null,
  password varchar(255) not null,
  active int(11) default null,
