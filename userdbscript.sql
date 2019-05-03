@@ -41,3 +41,49 @@ primary key(series)
 );
 
 insert into role value(1, 'USER');
+
+drop table if exists `matches`;
+CREATE TABLE matches (
+match_no INTEGER PRIMARY KEY,
+team1  VARCHAR(40) NOT NULL,
+team2 VARCHAR(40) NOT NULL,
+date datetime,
+result VARCHAR(40) NOT NULL 
+);
+
+drop table if exists `dailyprediction`;
+CREATE TABLE dailyprediction(
+username varchar(255),
+match_no INTEGER, 
+prediction VARCHAR(40) NOT NULL,
+PRIMARY KEY (username , match_no)
+);
+
+drop table if exists `semifinalprediction`;
+CREATE TABLE semifinalprediction(
+username varchar(255) PRIMARY KEY,
+team1 VARCHAR(40) NOT NULL,
+team2 VARCHAR(40) NOT NULL,
+team3 VARCHAR(40) NOT NULL,
+team4 VARCHAR(40) NOT NULL
+);
+
+drop table if exists `finalprediction`;
+CREATE TABLE finalprediction(
+username varchar(255) PRIMARY KEY,
+team1 VARCHAR(40) NOT NULL,
+team2 VARCHAR(40) NOT NULL
+);
+
+drop table if exists `championprediction`;
+CREATE TABLE championprediction(
+username varchar(255) PRIMARY KEY,
+prediction VARCHAR(40) NOT NULL
+);
+
+drop table if exists `scoretable`;
+CREATE TABLE scoretable(
+username varchar(255) PRIMARY KEY,
+total_score INTEGER NOT NULL,
+history_score INTEGER NOT NULL
+);
