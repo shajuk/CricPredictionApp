@@ -12,6 +12,11 @@ import com.prediction.app.model.User;
 import com.prediction.app.repository.RoleRepository;
 import com.prediction.app.repository.UserRepository;
 
+/**
+ * @author Shaju K
+ *
+ */
+
 @Service("userService")
 public class UserServiceImpl implements UserService{
 

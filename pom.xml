@@ -99,7 +99,13 @@
 			<artifactId>tomcat-embed-jasper</artifactId>
 			<scope>provided</scope>
 		</dependency>
-
+		
+		<dependency>
+		    <groupId>org.assertj</groupId>
+		    <artifactId>assertj-core</artifactId>
+		    <version>3.4.1</version>
+		    <scope>test</scope>
+		</dependency>
 		
 	</dependencies>
 

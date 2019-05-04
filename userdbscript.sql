@@ -49,6 +49,7 @@ match_no INTEGER PRIMARY KEY,
 team1  VARCHAR(40) NOT NULL,
 team2 VARCHAR(40) NOT NULL,
 date datetime,
+venue varchar(255) not null,
 result VARCHAR(40) NOT NULL 
 );
 

@@ -1,18 +1,27 @@
 package com.prediction.app.model;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
+/**
+ * @author Shaju K
+ *
+ */
 
 @Entity
 @Table(name = "user")
@@ -44,7 +53,61 @@ public class User {
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles;
 
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "user")
+	private Scoretable scoretable;
 	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+	private Set<Dailyprediction> dailypredictions = new HashSet<Dailyprediction>();
+	
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "user")
+	private Championprediction championprediction;
+	
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "user")
+	private Semifinalprediction semifinalprediction;
+	
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "user")
+	private Finalprediction finalprediction;
+	
+	public Scoretable getScoretable() {
+		return scoretable;
+	}
+
+	public void setScoretable(Scoretable scoretable) {
+		this.scoretable = scoretable;
+	}
+
+	public Set<Dailyprediction> getDailypredictions() {
+		return dailypredictions;
+	}
+
+	public void setDailypredictions(Set<Dailyprediction> dailypredictions) {
+		this.dailypredictions = dailypredictions;
+	}
+
+	public Championprediction getChampionprediction() {
+		return championprediction;
+	}
+
+	public void setChampionprediction(Championprediction championprediction) {
+		this.championprediction = championprediction;
+	}
+
+	public Semifinalprediction getSemifinalprediction() {
+		return semifinalprediction;
+	}
+
+	public void setSemifinalprediction(Semifinalprediction semifinalprediction) {
+		this.semifinalprediction = semifinalprediction;
+	}
+
+	public Finalprediction getFinalprediction() {
+		return finalprediction;
+	}
+
+	public void setFinalprediction(Finalprediction finalprediction) {
+		this.finalprediction = finalprediction;
+	}
+
 	public String getLocation() {
 		return location;
 	}

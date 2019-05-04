@@ -4,6 +4,11 @@ import javax.persistence.*;
 
 import java.util.Set;
 
+/**
+ * @author Shaju K
+ *
+ */
+
 @Entity
 @Table(name = "role")
 public class Role {
