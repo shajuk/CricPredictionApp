@@ -16,9 +16,16 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.assertj.core.api.Assertions.*;
 
+import com.prediction.app.model.Dailyprediction;
+import com.prediction.app.model.DailypredictionId;
 import com.prediction.app.model.Matches;
+import com.prediction.app.model.User;
+import com.prediction.app.service.DailyPredictionService;
+import com.prediction.app.service.DailyPredictionServiceImpl;
 import com.prediction.app.service.MatchService;
 import com.prediction.app.service.MatchServiceImpl;
+import com.prediction.app.service.UserService;
+import com.prediction.app.service.UserServiceImpl;
 
 /**
  * @author Shaju K
@@ -39,6 +46,16 @@ public class CricPredictionAppApplicationTests {
         @Bean
         public MatchService matchService() {
             return new MatchServiceImpl();
+        }
+        
+        @Bean
+        public DailyPredictionService dailyPredictionService(){
+        	return new DailyPredictionServiceImpl();
+        }
+        
+        @Bean
+        public UserService userService(){
+        	return new UserServiceImpl();
         }
     }
 	
@@ -121,6 +138,106 @@ public class CricPredictionAppApplicationTests {
 		matches.add(new Matches(47, "2ND", "3RD", formatter.parse("11/07/2019 15:00:00"), "Edgbaston, Birmingham",""));
 		matches.add(new Matches(48, "TBC", "TBC", formatter.parse("14/07/2019 15:00:00"), "Lord's Cricket Ground, London",""));
 		matchService.saveAllMatches(matches);
+	}
+	
+	@Autowired
+	UserService userService;
+	
+	@Test
+	public void saveUser(){
+		User user1=new User();
+		user1.setFirstname("Shaju");
+		user1.setLastname("Kuppelan");
+		user1.setLocation("Kochi");
+		user1.setUsername("373962");
+		user1.setPassword("123");
+		userService.saveUser(user1);
 		
+		User user2=new User();
+		user2.setFirstname("Shibu");
+		user2.setLastname("Kuppelan");
+		user2.setLocation("Kochi");
+		user2.setUsername("373963");
+		user2.setPassword("123");
+		userService.saveUser(user2);
+		
+		User user=new User();
+		user.setFirstname("Sandhya");
+		user.setLastname("KU");
+		user.setLocation("Chennai");
+		user.setUsername("373964");
+		user.setPassword("123");
+		userService.saveUser(user);
+	}
+	
+	@Autowired
+	DailyPredictionService dailyPredictionService;
+	
+	@Test
+	public void saveDailyPrediction(){
+		Matches match1=matchService.findMatchByMatchNo(1);
+		Matches match2=matchService.findMatchByMatchNo(2);
+		Matches match3=matchService.findMatchByMatchNo(3);
+		
+		User shaju=userService.findUserByUsername("373962");
+		User shibu=userService.findUserByUsername("373963");
+		User sandhya=userService.findUserByUsername("373964");
+		
+		//Match #1 Prediction
+		Dailyprediction dp1=new Dailyprediction();
+		DailypredictionId dailypredictionId1=new DailypredictionId(shaju.getId(),match1.getMatchNo());
+		dp1.setId(dailypredictionId1);
+		dp1.setPrediction("ENGLAND");
+		dailyPredictionService.saveDailyPrediction(dp1);
+		
+		Dailyprediction dp2=new Dailyprediction();
+		DailypredictionId dailypredictionId2=new DailypredictionId(shibu.getId(),match1.getMatchNo());
+		dp2.setId(dailypredictionId2);
+		dp2.setPrediction("SOUTH AFRICA");
+		dailyPredictionService.saveDailyPrediction(dp2);
+		
+		Dailyprediction dp3=new Dailyprediction();
+		DailypredictionId dailypredictionId3=new DailypredictionId(sandhya.getId(),match1.getMatchNo());
+		dp3.setId(dailypredictionId3);
+		dp3.setPrediction("SOUTH AFRICA");
+		dailyPredictionService.saveDailyPrediction(dp3);
+		
+		//Match #2 Prediction
+		Dailyprediction dp4=new Dailyprediction();
+		DailypredictionId dailypredictionId4=new DailypredictionId(shaju.getId(),match2.getMatchNo());
+		dp4.setId(dailypredictionId4);
+		dp4.setPrediction("WEST INDIES");
+		dailyPredictionService.saveDailyPrediction(dp4);
+		
+		Dailyprediction dp5=new Dailyprediction();
+		DailypredictionId dailypredictionId5=new DailypredictionId(shibu.getId(),match2.getMatchNo());
+		dp5.setId(dailypredictionId5);
+		dp5.setPrediction("PAKISTAN");
+		dailyPredictionService.saveDailyPrediction(dp5);
+		
+		Dailyprediction dp6=new Dailyprediction();
+		DailypredictionId dailypredictionId6=new DailypredictionId(sandhya.getId(),match2.getMatchNo());
+		dp6.setId(dailypredictionId6);
+		dp6.setPrediction("WEST INDIES");
+		dailyPredictionService.saveDailyPrediction(dp6);
+		
+		//Match #3 Prediction
+		Dailyprediction dp7=new Dailyprediction();
+		DailypredictionId dailypredictionId7=new DailypredictionId(shaju.getId(),match3.getMatchNo());
+		dp7.setId(dailypredictionId7);
+		dp7.setPrediction("NEW ZEALAND");
+		dailyPredictionService.saveDailyPrediction(dp7);
+		
+		Dailyprediction dp8=new Dailyprediction();
+		DailypredictionId dailypredictionId8=new DailypredictionId(shibu.getId(),match3.getMatchNo());
+		dp8.setId(dailypredictionId8);
+		dp8.setPrediction("NEW ZEALAND");
+		dailyPredictionService.saveDailyPrediction(dp8);
+		
+		Dailyprediction dp9=new Dailyprediction();
+		DailypredictionId dailypredictionId9=new DailypredictionId(sandhya.getId(),match3.getMatchNo());
+		dp9.setId(dailypredictionId9);
+		dp9.setPrediction("SRI LANKA");
+		dailyPredictionService.saveDailyPrediction(dp9);
 	}
 }

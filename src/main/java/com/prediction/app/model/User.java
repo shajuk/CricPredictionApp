@@ -17,6 +17,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.persistence.UniqueConstraint;
 
 /**
  * @author Shaju K
@@ -24,17 +25,18 @@ import javax.persistence.Transient;
  */
 
 @Entity
-@Table(name = "user")
+@Table(name = "user",  uniqueConstraints = @UniqueConstraint(columnNames = "username"))
 public class User {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id", unique = true, nullable = false)
 	private int id;
 	
 	@Column(name="firstname")
 	private String firstname;
 	
-	@Column(name="username")
+	@Column(name = "username", unique = true, nullable = false)
 	private String username;
 	
 	@Column(name="lastname")

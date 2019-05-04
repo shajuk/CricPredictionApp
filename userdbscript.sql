@@ -17,7 +17,8 @@ create table `user`(
  username varchar(255) not null,
  password varchar(255) not null,
  active int(11) default null,
-  primary key(id)
+ constraint user_pk primary key(id),
+ constraint unique_username UNIQUE(username)
 );
 
 drop table if exists `user_role`;
