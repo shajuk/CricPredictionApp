@@ -1,18 +1,18 @@
 package com.prediction.app.repository;
 
-import java.util.List;
-import java.util.Optional;
 
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import com.prediction.app.model.Matches;
+import com.prediction.app.model.Game;
+
 
 /**
  * @author Shaju K
  *
  */
 
-public interface MatchRepository extends JpaRepository<Matches, Integer> {
+@Repository("matchRepository")
+public interface MatchRepository extends JpaRepository<Game, Integer> {
 
 }

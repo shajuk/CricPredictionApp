@@ -44,8 +44,8 @@ primary key(series)
 insert into role value(1, 'USER');
 
 
-drop table if exists `matches`;
-CREATE TABLE matches (
+drop table if exists `game`;
+CREATE TABLE game (
 match_no INTEGER PRIMARY KEY,
 team1  VARCHAR(40) NOT NULL,
 team2 VARCHAR(40) NOT NULL,
@@ -61,7 +61,7 @@ match_no INTEGER,
 prediction VARCHAR(40) NOT NULL,
 PRIMARY KEY (userid , match_no),
 constraint userid_dailyprediction foreign key (userid) references user(id),
-constraint match_no_dailyprediction foreign key (match_no) references matches(match_no)
+constraint match_no_dailyprediction foreign key (match_no) references game(match_no)
 );
 
 drop table if exists `semifinalprediction`;

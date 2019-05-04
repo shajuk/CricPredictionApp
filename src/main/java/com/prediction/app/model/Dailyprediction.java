@@ -22,17 +22,17 @@ import javax.persistence.Table;
 public class Dailyprediction implements java.io.Serializable {
 
 	private DailypredictionId id;
-	private Matches matches;
+	private Game game;
 	private User user;
 	private String prediction;
 
 	public Dailyprediction() {
 	}
 
-	public Dailyprediction(DailypredictionId id, Matches matches, User user,
+	public Dailyprediction(DailypredictionId id, Game game, User user,
 			String prediction) {
 		this.id = id;
-		this.matches = matches;
+		this.game = game;
 		this.user = user;
 		this.prediction = prediction;
 	}
@@ -51,12 +51,12 @@ public class Dailyprediction implements java.io.Serializable {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "match_no", nullable = false, insertable = false, updatable = false)
-	public Matches getMatches() {
-		return this.matches;
+	public Game getGame() {
+		return this.game;
 	}
 
-	public void setMatches(Matches matches) {
-		this.matches = matches;
+	public void setGame(Game game) {
+		this.game = game;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)

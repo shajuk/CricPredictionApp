@@ -20,8 +20,8 @@ import javax.persistence.TemporalType;
  */
 
 @Entity
-@Table(name = "matches", catalog = "cricapp")
-public class Matches implements java.io.Serializable {
+@Table(name = "game", catalog = "cricapp")
+public class Game implements java.io.Serializable {
 
 	private int matchNo;
 	private String team1;
@@ -32,25 +32,25 @@ public class Matches implements java.io.Serializable {
 	private Set<Dailyprediction> dailypredictions = new HashSet<Dailyprediction>(
 			0);
 
-	public Matches() {
+	public Game() {
 	}
 
-	public Matches(int matchNo, String team1, String team2,Date date,String venue,String result) {
+	public Game(int matchNo, String team1, String team2,Date date, String venue,
+			String result) {
 		this.matchNo = matchNo;
 		this.team1 = team1;
 		this.team2 = team2;
-		this.date = date;
-		this.venue=venue;
+		this.venue = venue;
 		this.result = result;
 	}
 
-	public Matches(int matchNo, String team1, String team2, Date date,
+	public Game(int matchNo, String team1, String team2, Date date,
 			String venue, String result, Set<Dailyprediction> dailypredictions) {
 		this.matchNo = matchNo;
 		this.team1 = team1;
 		this.team2 = team2;
 		this.date = date;
-		this.venue=venue;
+		this.venue = venue;
 		this.result = result;
 		this.dailypredictions = dailypredictions;
 	}
@@ -82,15 +82,6 @@ public class Matches implements java.io.Serializable {
 	public void setTeam2(String team2) {
 		this.team2 = team2;
 	}
-	
-	@Column(name = "venue", nullable = false, length = 255)
-	public String getVenue() {
-		return venue;
-	}
-
-	public void setVenue(String venue) {
-		this.venue = venue;
-	}
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "date", length = 0)
@@ -102,6 +93,15 @@ public class Matches implements java.io.Serializable {
 		this.date = date;
 	}
 
+	@Column(name = "venue", nullable = false)
+	public String getVenue() {
+		return this.venue;
+	}
+
+	public void setVenue(String venue) {
+		this.venue = venue;
+	}
+
 	@Column(name = "result", nullable = false, length = 40)
 	public String getResult() {
 		return this.result;
@@ -111,7 +111,7 @@ public class Matches implements java.io.Serializable {
 		this.result = result;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "matches")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "game")
 	public Set<Dailyprediction> getDailypredictions() {
 		return this.dailypredictions;
 	}
