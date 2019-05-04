@@ -42,6 +42,7 @@ primary key(series)
 
 insert into role value(1, 'USER');
 
+
 drop table if exists `matches`;
 CREATE TABLE matches (
 match_no INTEGER PRIMARY KEY,
@@ -53,37 +54,45 @@ result VARCHAR(40) NOT NULL
 
 drop table if exists `dailyprediction`;
 CREATE TABLE dailyprediction(
-username varchar(255),
+userid int(11),
 match_no INTEGER, 
 prediction VARCHAR(40) NOT NULL,
-PRIMARY KEY (username , match_no)
+PRIMARY KEY (userid , match_no),
+constraint userid_dailyprediction foreign key (userid) references user(id),
+constraint match_no_dailyprediction foreign key (match_no) references matches(match_no)
 );
 
 drop table if exists `semifinalprediction`;
 CREATE TABLE semifinalprediction(
-username varchar(255) PRIMARY KEY,
+userid int(11) PRIMARY KEY,
 team1 VARCHAR(40) NOT NULL,
 team2 VARCHAR(40) NOT NULL,
 team3 VARCHAR(40) NOT NULL,
-team4 VARCHAR(40) NOT NULL
+team4 VARCHAR(40) NOT NULL,
+constraint userid_semifinalprediction foreign key (userid) references user(id)
 );
 
 drop table if exists `finalprediction`;
 CREATE TABLE finalprediction(
-username varchar(255) PRIMARY KEY,
+userid int(11) PRIMARY KEY,
 team1 VARCHAR(40) NOT NULL,
-team2 VARCHAR(40) NOT NULL
+team2 VARCHAR(40) NOT NULL,
+constraint userid_finalprediction foreign key (userid) references user(id)
 );
 
 drop table if exists `championprediction`;
 CREATE TABLE championprediction(
-username varchar(255) PRIMARY KEY,
-prediction VARCHAR(40) NOT NULL
+userid int(11) PRIMARY KEY,
+prediction VARCHAR(40) NOT NULL,
+constraint userid_championprediction foreign key (userid) references user(id)
 );
 
 drop table if exists `scoretable`;
 CREATE TABLE scoretable(
-username varchar(255) PRIMARY KEY,
+userid int(11) PRIMARY KEY,
 total_score INTEGER NOT NULL,
-history_score INTEGER NOT NULL
+history_score INTEGER NOT NULL,
+constraint userid_scoretable foreign key (userid) references user(id)
 );
+
+
