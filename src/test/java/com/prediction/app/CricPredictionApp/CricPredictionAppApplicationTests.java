@@ -267,4 +267,14 @@ public class CricPredictionAppApplicationTests {
 						));
 	}
 	
+	@Test
+	public void findAllDailyPredictions(){
+		
+		List<Dailyprediction> dailyprediction=dailyPredictionService.findAllDailyPredictions();
+		dailyprediction.forEach(
+				dp->System.out.println("User Id: "+dp.getUser().getId()
+						+", MatchNo: "+dp.getGame().getMatchNo()
+						+", Prediction: "+dp.getPrediction()
+						));
+	}
 }

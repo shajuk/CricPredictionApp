@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.prediction.app.model.Dailyprediction;
@@ -41,4 +42,8 @@ public class DailyPredictionServiceImpl implements DailyPredictionService {
 		return dailyPredictionRepository.findByGame(game);
 	}
 
+	@Override
+	public List<Dailyprediction> findAllDailyPredictions() {
+		return dailyPredictionRepository.findAll();
+	}
 }

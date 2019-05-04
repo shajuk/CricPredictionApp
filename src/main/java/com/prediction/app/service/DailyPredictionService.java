@@ -17,4 +17,5 @@ public interface DailyPredictionService {
 	List<Dailyprediction> findDailyPredictionByUser(User user);
 	List<Dailyprediction> findDailyPredictionByMatches(Game game);
 	void saveDailyPrediction(Dailyprediction dailyPrediction);
+	List<Dailyprediction> findAllDailyPredictions();
 }
