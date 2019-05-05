@@ -21,6 +21,7 @@ import com.prediction.app.model.Dailyprediction;
 import com.prediction.app.model.DailypredictionId;
 import com.prediction.app.model.Finalprediction;
 import com.prediction.app.model.Game;
+import com.prediction.app.model.Scoretable;
 import com.prediction.app.model.Semifinalprediction;
 import com.prediction.app.model.User;
 import com.prediction.app.service.ChampionPredictionService;
@@ -31,6 +32,8 @@ import com.prediction.app.service.FinalPredictionService;
 import com.prediction.app.service.FinalPredictionServiceImpl;
 import com.prediction.app.service.MatchService;
 import com.prediction.app.service.MatchServiceImpl;
+import com.prediction.app.service.ScoreTableService;
+import com.prediction.app.service.ScoreTableServiceImpl;
 import com.prediction.app.service.SemiFinalPredictionService;
 import com.prediction.app.service.SemiFinalPredictionServiceImpl;
 import com.prediction.app.service.UserService;
@@ -80,6 +83,11 @@ public class CricPredictionAppApplicationTests {
         @Bean
         public ChampionPredictionService championPredictionService(){
         	return new ChampionPredictionServiceImpl();
+        }
+        
+        @Bean
+        public ScoreTableService scoreService(){
+        	return new ScoreTableServiceImpl();
         }
     }
 	
@@ -421,6 +429,46 @@ public class CricPredictionAppApplicationTests {
 		List<Championprediction> championpredictions=championPredictionService.findAllChampionPredictions();
 		championpredictions.forEach(fp3 ->
 		System.out.println("Username: " +fp3.getUser().getUsername()+" Winner: "+fp3.getPrediction())
+				);
+	}
+	
+	@Autowired
+	ScoreTableService scoreService;
+	
+	@Test
+	public void saveScore(){
+		User shaju=userService.findUserByUsername("373962");
+		User shibu=userService.findUserByUsername("373963");
+		User sandhya=userService.findUserByUsername("373964");
+		Scoretable s1=new Scoretable(shaju,520,420);
+		scoreService.saveScore(s1);
+		Scoretable s2=new Scoretable(shibu,470,400);
+		scoreService.saveScore(s2);
+		Scoretable s3=new Scoretable(sandhya,400,360);
+		scoreService.saveScore(s3);
+	}
+	
+	@Test
+	public void updateScoreByUser(){
+		User shaju=userService.findUserByUsername("373962");
+		Scoretable s1=scoreService.findScoreByUser(shaju);
+		s1.setTotalScore(s1.getTotalScore()+100);
+		s1.setHistoryScore(s1.getHistoryScore()+100);
+		scoreService.saveScore(s1);
+	}
+	
+	@Test
+	public void findScoreByUser(){
+		User shaju=userService.findUserByUsername("373962");
+		Scoretable score1=scoreService.findScoreByUser(shaju);
+		System.out.println("Username: " +score1.getUser().getUsername()+" Current Score: "+score1.getTotalScore()+" Previous Score: "+score1.getHistoryScore());
+	}
+	
+	@Test
+	public void findAllScores(){
+		List<Scoretable> scores=scoreService.findAllScores();
+		scores.forEach(score1->
+				System.out.println("Username: " +score1.getUser().getUsername()+" Current Score: "+score1.getTotalScore()+" Previous Score: "+score1.getHistoryScore())
 				);
 	}
 }
