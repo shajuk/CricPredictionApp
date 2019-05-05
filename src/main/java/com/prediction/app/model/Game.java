@@ -26,32 +26,33 @@ public class Game implements java.io.Serializable {
 	private int matchNo;
 	private String team1;
 	private String team2;
-	private Date date;
+	private Date matchDate;
 	private String venue;
-	private String result;
+	private String matchResult;
 	private Set<Dailyprediction> dailypredictions = new HashSet<Dailyprediction>(
 			0);
 
 	public Game() {
 	}
 
-	public Game(int matchNo, String team1, String team2,Date date, String venue,
-			String result) {
+	public Game(int matchNo, String team1, String team2,Date matchDate, String venue,
+			String matchResult) {
 		this.matchNo = matchNo;
 		this.team1 = team1;
 		this.team2 = team2;
+		this.matchDate = matchDate;
 		this.venue = venue;
-		this.result = result;
+		this.matchResult = matchResult;
 	}
 
-	public Game(int matchNo, String team1, String team2, Date date,
-			String venue, String result, Set<Dailyprediction> dailypredictions) {
+	public Game(int matchNo, String team1, String team2, Date matchDate,
+			String venue, String matchResult, Set<Dailyprediction> dailypredictions) {
 		this.matchNo = matchNo;
 		this.team1 = team1;
 		this.team2 = team2;
-		this.date = date;
+		this.matchDate = matchDate;
 		this.venue = venue;
-		this.result = result;
+		this.matchResult = matchResult;
 		this.dailypredictions = dailypredictions;
 	}
 
@@ -84,13 +85,13 @@ public class Game implements java.io.Serializable {
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "date", length = 0)
-	public Date getDate() {
-		return this.date;
+	@Column(name = "match_date", length = 0)
+	public Date getMatchDate() {
+		return matchDate;
 	}
 
-	public void setDate(Date date) {
-		this.date = date;
+	public void setMatchDate(Date matchDate) {
+		this.matchDate = matchDate;
 	}
 
 	@Column(name = "venue", nullable = false)
@@ -102,15 +103,15 @@ public class Game implements java.io.Serializable {
 		this.venue = venue;
 	}
 
-	@Column(name = "result", nullable = false, length = 40)
-	public String getResult() {
-		return this.result;
+	@Column(name = "match_result", nullable = false, length = 40)
+	public String getMatchResult() {
+		return matchResult;
 	}
-
-	public void setResult(String result) {
-		this.result = result;
+	
+	public void setMatchResult(String matchResult) {
+		this.matchResult = matchResult;
 	}
-
+	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "game")
 	public Set<Dailyprediction> getDailypredictions() {
 		return this.dailypredictions;

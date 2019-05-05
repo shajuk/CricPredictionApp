@@ -136,15 +136,15 @@ public class CricPredictionAppApplicationTests {
 	public void findAllMatches(){
 		List<Game> matches=matchService.findAllMatches();
 		assertThat(!matches.isEmpty());
-		matches.forEach(m -> System.out.println(" Match No - "+m.getMatchNo()+" "+m.getResult()));
+		matches.forEach(m -> System.out.println(" Match No - "+m.getMatchNo()+" "+m.getMatchResult()));
 	}
 	
 	@Test
 	public void updateMatch(){
 		Game savedMatch=matchService.findMatchByMatchNo(2);
-		savedMatch.setResult(savedMatch.getTeam2());
+		savedMatch.setMatchResult(savedMatch.getTeam2());
 		matchService.updateMatch(savedMatch);
-		assertThat(savedMatch.getResult()!=null);
+		assertThat(savedMatch.getMatchResult()!=null);
 		findAllMatches();
 	}
 	
