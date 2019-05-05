@@ -16,14 +16,23 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.assertj.core.api.Assertions.*;
 
+import com.prediction.app.model.Championprediction;
 import com.prediction.app.model.Dailyprediction;
 import com.prediction.app.model.DailypredictionId;
+import com.prediction.app.model.Finalprediction;
 import com.prediction.app.model.Game;
+import com.prediction.app.model.Semifinalprediction;
 import com.prediction.app.model.User;
+import com.prediction.app.service.ChampionPredictionService;
+import com.prediction.app.service.ChampionPredictionServiceImpl;
 import com.prediction.app.service.DailyPredictionService;
 import com.prediction.app.service.DailyPredictionServiceImpl;
+import com.prediction.app.service.FinalPredictionService;
+import com.prediction.app.service.FinalPredictionServiceImpl;
 import com.prediction.app.service.MatchService;
 import com.prediction.app.service.MatchServiceImpl;
+import com.prediction.app.service.SemiFinalPredictionService;
+import com.prediction.app.service.SemiFinalPredictionServiceImpl;
 import com.prediction.app.service.UserService;
 import com.prediction.app.service.UserServiceImpl;
 
@@ -58,7 +67,20 @@ public class CricPredictionAppApplicationTests {
         	return new DailyPredictionServiceImpl();
         }
         
-       
+        @Bean
+        public SemiFinalPredictionService semiFinalPredictionService(){
+        	return new SemiFinalPredictionServiceImpl();
+        }
+        
+        @Bean
+        public FinalPredictionService finalPredictionService(){
+        	return new FinalPredictionServiceImpl();
+        }
+        
+        @Bean
+        public ChampionPredictionService championPredictionService(){
+        	return new ChampionPredictionServiceImpl();
+        }
     }
 	
 	@Autowired
@@ -112,7 +134,7 @@ public class CricPredictionAppApplicationTests {
 	@Test
 	public void updateMatch(){
 		Game savedMatch=matchService.findMatchByMatchNo(2);
-		savedMatch.setResult(savedMatch.getTeam1());
+		savedMatch.setResult(savedMatch.getTeam2());
 		matchService.updateMatch(savedMatch);
 		assertThat(savedMatch.getResult()!=null);
 		findAllMatches();
@@ -276,5 +298,129 @@ public class CricPredictionAppApplicationTests {
 						+", MatchNo: "+dp.getGame().getMatchNo()
 						+", Prediction: "+dp.getPrediction()
 						));
+	}
+	
+	@Autowired
+	SemiFinalPredictionService semiFinalPredictionService;
+	
+	@Test
+	public void saveSemiFinalPrediction(){
+		User shaju=userService.findUserByUsername("373962");
+		User shibu=userService.findUserByUsername("373963");
+		User sandhya=userService.findUserByUsername("373964");
+		
+		Semifinalprediction sfp1=new Semifinalprediction(shaju,"INDIA", "SOUTH AFRICA", "PAKISTAN","ENGLAND");
+		semiFinalPredictionService.saveSemiFinalPrediction(sfp1);
+		
+		Semifinalprediction sfp2=new Semifinalprediction(shibu,"INDIA", "SOUTH AFRICA", "AUSTRALIA","ENGLAND");
+		semiFinalPredictionService.saveSemiFinalPrediction(sfp2);
+		
+		Semifinalprediction sfp3=new Semifinalprediction(sandhya,"INDIA", "SOUTH AFRICA", "SRI LANKA","WEST INDIES");
+		semiFinalPredictionService.saveSemiFinalPrediction(sfp3);
+	}
+	
+	@Test
+	public void updateSemiFinalPrediction(){
+		User sandhya=userService.findUserByUsername("373964");
+		Semifinalprediction sfp3=semiFinalPredictionService.findSemiFinalPredictionByUser(sandhya);
+		sfp3.setTeam4("PAKISTAN");
+		semiFinalPredictionService.saveSemiFinalPrediction(sfp3);
+	}
+	
+	@Test
+	public void findSemiFinalPredictionByUser(){
+		User shaju=userService.findUserByUsername("373962");
+		Semifinalprediction sfp=semiFinalPredictionService.findSemiFinalPredictionByUser(shaju);
+		System.out.println("Username: " +sfp.getUser().getUsername()+" Team1: "+sfp.getTeam1()
+				+" Team2: "+sfp.getTeam2()+" Team3: "+sfp.getTeam3()+" Team4: "+sfp.getTeam4());
+	}
+	
+	@Test
+	public void findAllSemiFinalPredictions(){
+		List<Semifinalprediction> semifinalpredictions=semiFinalPredictionService.findAllSemiFinalPredictions();
+		semifinalpredictions.forEach( sfp ->
+		System.out.println("Username: " +sfp.getUser().getUsername()+" Team1: "+sfp.getTeam1()
+				+" Team2: "+sfp.getTeam2()+" Team3: "+sfp.getTeam3()+" Team4: "+sfp.getTeam4())
+				);
+	}
+	
+	@Autowired
+	FinalPredictionService finalPredictionService;
+	
+	@Test
+	public void saveFinalPrediction(){
+		User shaju=userService.findUserByUsername("373962");
+		User shibu=userService.findUserByUsername("373963");
+		User sandhya=userService.findUserByUsername("373964");
+		Finalprediction fp1=new Finalprediction(shaju,"INDIA","PAKISTAN");
+		finalPredictionService.saveFinalPrediction(fp1);
+		Finalprediction fp2=new Finalprediction(shibu,"INDIA","SOUTH AFRICA");
+		finalPredictionService.saveFinalPrediction(fp2);
+		Finalprediction fp3=new Finalprediction(sandhya,"INDIA","ENGLAND");
+		finalPredictionService.saveFinalPrediction(fp3);
+	}
+	
+	@Test
+	public void updateFinalPrediction(){
+		User sandhya=userService.findUserByUsername("373964");
+		Finalprediction fp3=finalPredictionService.findFinalPredictionByUser(sandhya);
+		fp3.setTeam2("AUSTRALIA");
+		finalPredictionService.saveFinalPrediction(fp3);
+	}
+	
+	@Test
+	public void findFinalPredictionByUser(){
+		User sandhya=userService.findUserByUsername("373964");
+		Finalprediction sfp=finalPredictionService.findFinalPredictionByUser(sandhya);
+		System.out.println("Username: " +sfp.getUser().getUsername()+" Team1: "+sfp.getTeam1()
+				+" Team2: "+sfp.getTeam2());
+	}
+	
+	@Test
+	public void findAllFinalPredictions(){
+		List<Finalprediction> finalPredictions=finalPredictionService.findAllFinalPredictions();
+		finalPredictions.forEach(fp ->
+		System.out.println("Username: " +fp.getUser().getUsername()+" Team1: "+fp.getTeam1()
+				+" Team2: "+fp.getTeam2())
+				);
+	}
+	
+	@Autowired
+	ChampionPredictionService championPredictionService;
+	
+	@Test
+	public void saveChampionPrediction(){
+		User shaju=userService.findUserByUsername("373962");
+		User shibu=userService.findUserByUsername("373963");
+		User sandhya=userService.findUserByUsername("373964");
+		Championprediction fp1=new Championprediction(shaju,"INDIA");
+		championPredictionService.saveChampionPrediction(fp1);
+		Championprediction fp2=new Championprediction(shibu,"INDIA");
+		championPredictionService.saveChampionPrediction(fp2);
+		Championprediction fp3=new Championprediction(sandhya,"ENGLAND");
+		championPredictionService.saveChampionPrediction(fp3);
+	}
+	
+	@Test
+	public void updateChampionPrediction(){
+		User sandhya=userService.findUserByUsername("373964");
+		Championprediction fp3=championPredictionService.findChampionPredictionByUser(sandhya);
+		fp3.setPrediction("INDIA");
+		championPredictionService.saveChampionPrediction(fp3);
+	}
+	
+	@Test
+	public void findChampionPredictionByUser(){
+		User sandhya=userService.findUserByUsername("373964");
+		Championprediction fp3=championPredictionService.findChampionPredictionByUser(sandhya);
+		System.out.println("Username: " +fp3.getUser().getUsername()+" Winner: "+fp3.getPrediction());
+	}
+	
+	@Test
+	public void findAllChampionPredictions(){
+		List<Championprediction> championpredictions=championPredictionService.findAllChampionPredictions();
+		championpredictions.forEach(fp3 ->
+		System.out.println("Username: " +fp3.getUser().getUsername()+" Winner: "+fp3.getPrediction())
+				);
 	}
 }

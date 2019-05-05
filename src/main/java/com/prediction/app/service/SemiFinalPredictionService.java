@@ -13,7 +13,7 @@ import com.prediction.app.model.User;
  *
  */
 public interface SemiFinalPredictionService {
-	List<Semifinalprediction> findSemiFinalPredictionByUser(User user);
+	Semifinalprediction findSemiFinalPredictionByUser(User user);
 	void saveSemiFinalPrediction(Semifinalprediction semifinalprediction);
 	List<Semifinalprediction> findAllSemiFinalPredictions();
 }

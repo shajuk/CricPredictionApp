@@ -24,7 +24,7 @@ public class MatchServiceImpl implements MatchService{
 	
 	@Override
 	public Game findMatchByMatchNo(Integer matchNo) {
-		return matchRepository.findById(matchNo).orElseThrow(EntityNotFoundException::new);
+		return matchRepository.findById(matchNo).orElse(null);
 	}
 
 	@Override
