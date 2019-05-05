@@ -16,6 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.assertj.core.api.Assertions.*;
 
+import com.prediction.app.facade.ScoreCalculationFacade;
 import com.prediction.app.model.Championprediction;
 import com.prediction.app.model.Dailyprediction;
 import com.prediction.app.model.DailypredictionId;
@@ -38,6 +39,7 @@ import com.prediction.app.service.SemiFinalPredictionService;
 import com.prediction.app.service.SemiFinalPredictionServiceImpl;
 import com.prediction.app.service.UserService;
 import com.prediction.app.service.UserServiceImpl;
+import com.prediction.app.utils.PredictionAppUtils;
 
 /**
  * @author Shaju K
@@ -89,6 +91,17 @@ public class CricPredictionAppApplicationTests {
         public ScoreTableService scoreService(){
         	return new ScoreTableServiceImpl();
         }
+        
+        @Bean
+        public PredictionAppUtils predictionAppUtils(){
+        	return new PredictionAppUtils();
+        }
+        
+        @Bean
+        public ScoreCalculationFacade scoreCalculationFacade(){
+        	return new ScoreCalculationFacade();
+        }
+        
     }
 	
 	@Autowired
@@ -137,6 +150,13 @@ public class CricPredictionAppApplicationTests {
 		List<Game> matches=matchService.findAllMatches();
 		assertThat(!matches.isEmpty());
 		matches.forEach(m -> System.out.println(" Match No - "+m.getMatchNo()+" "+m.getMatchResult()));
+	}
+	
+	@Test
+	public void findMatchByMatchDate() throws ParseException{
+		List<Game> matches=matchService.findMatchByMatchDateBetween(predictionAppUtils.getYesterdayBeginDateTime(),predictionAppUtils.getYesterdayEndDateTime());
+		assertThat(!matches.isEmpty());
+		matches.forEach(m -> System.out.println(" Match No - "+m.getMatchNo()+" Team1: "+m.getTeam1()+" Team2: "+m.getTeam2()));
 	}
 	
 	@Test
@@ -470,5 +490,22 @@ public class CricPredictionAppApplicationTests {
 		scores.forEach(score1->
 				System.out.println("Username: " +score1.getUser().getUsername()+" Current Score: "+score1.getTotalScore()+" Previous Score: "+score1.getHistoryScore())
 				);
+	}
+	
+	@Autowired
+	PredictionAppUtils predictionAppUtils;
+	
+	@Test
+	public void printDates(){
+		System.out.println(predictionAppUtils.getYesterdayBeginDateTime());
+		System.out.println(predictionAppUtils.getYesterdayEndDateTime());
+	}
+	
+	@Autowired
+	ScoreCalculationFacade scoreCalculationFacade;
+	
+	@Test
+	public void updateAllScores(){
+		scoreCalculationFacade.updateAllScores();
 	}
 }

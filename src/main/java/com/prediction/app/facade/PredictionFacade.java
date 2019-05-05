@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.prediction.app;
+package com.prediction.app.facade;
 
 import org.springframework.stereotype.Component;
 

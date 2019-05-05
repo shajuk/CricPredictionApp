@@ -1,5 +1,6 @@
 package com.prediction.app.service;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityNotFoundException;
@@ -48,4 +49,9 @@ public class MatchServiceImpl implements MatchService{
 		matchRepository.flush();
 	}
 
+	
+	@Override
+	public List<Game> findMatchByMatchDateBetween(Date matchDateBegin,Date matchDateEnd) {
+		return matchRepository.findByMatchDateBetween(matchDateBegin,matchDateEnd);
+	}
 }
