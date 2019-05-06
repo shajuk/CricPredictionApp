@@ -314,6 +314,12 @@ public class CricPredictionAppApplicationTests {
 	}
 	
 	@Test
+	public void updateDailyPredictionPoints(){
+		dailyPredictionService.updateDailyPredictionPoints(1, 10, -3, "ENGLAND");
+	}
+	
+	
+	@Test
 	public void findDailyPredictionByMatch(){
 		Game match3=matchService.findMatchByMatchNo(3);
 		List<Dailyprediction> dailyprediction=dailyPredictionService.findDailyPredictionByMatches(match3);

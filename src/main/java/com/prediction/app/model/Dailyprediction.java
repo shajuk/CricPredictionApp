@@ -25,7 +25,8 @@ public class Dailyprediction implements java.io.Serializable {
 	private Game game;
 	private User user;
 	private String prediction;
-
+	private int points;
+	
 	public Dailyprediction() {
 	}
 
@@ -76,6 +77,15 @@ public class Dailyprediction implements java.io.Serializable {
 
 	public void setPrediction(String prediction) {
 		this.prediction = prediction;
+	}
+
+	@Column(name = "points", nullable = false)
+	public int getPoints() {
+		return this.points;
+	}
+	
+	public void setPoints(int points) {
+		this.points = points;
 	}
 
 }

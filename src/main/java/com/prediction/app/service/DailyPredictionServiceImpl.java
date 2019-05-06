@@ -46,4 +46,10 @@ public class DailyPredictionServiceImpl implements DailyPredictionService {
 	public List<Dailyprediction> findAllDailyPredictions() {
 		return dailyPredictionRepository.findAll();
 	}
+
+	@Override
+	public void updateDailyPredictionPoints(int matchNo, int successPoints,
+			int failurePoints, String matchResult) {
+		dailyPredictionRepository.updateDailyPredictionByMatch(matchNo,successPoints,failurePoints,matchResult);
+	}
 }

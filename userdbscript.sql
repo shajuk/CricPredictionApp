@@ -67,6 +67,7 @@ CREATE TABLE dailyprediction(
 userid int(11),
 match_no INTEGER, 
 prediction VARCHAR(40) NOT NULL,
+points int(11) DEFAULT '0' NOT NULL,
 PRIMARY KEY (userid , match_no),
 constraint userid_dailyprediction foreign key (userid) references user(id),
 constraint match_no_dailyprediction foreign key (match_no) references game(match_no)
@@ -79,6 +80,7 @@ team1 VARCHAR(40) NOT NULL,
 team2 VARCHAR(40) NOT NULL,
 team3 VARCHAR(40) NOT NULL,
 team4 VARCHAR(40) NOT NULL,
+points int(11) DEFAULT '0' NOT NULL,
 constraint userid_semifinalprediction foreign key (userid) references user(id)
 );
 
@@ -87,6 +89,7 @@ CREATE TABLE finalprediction(
 userid int(11) PRIMARY KEY,
 team1 VARCHAR(40) NOT NULL,
 team2 VARCHAR(40) NOT NULL,
+points int(11) DEFAULT '0' NOT NULL,
 constraint userid_finalprediction foreign key (userid) references user(id)
 );
 
@@ -94,14 +97,15 @@ drop table if exists `championprediction`;
 CREATE TABLE championprediction(
 userid int(11) PRIMARY KEY,
 prediction VARCHAR(40) NOT NULL,
+points int(11) DEFAULT '0' NOT NULL,
 constraint userid_championprediction foreign key (userid) references user(id)
 );
 
 drop table if exists `scoretable`;
 CREATE TABLE scoretable(
 userid int(11) PRIMARY KEY,
-total_score INTEGER NOT NULL,
-history_score INTEGER NOT NULL,
+total_score INTEGER  DEFAULT '0' NOT NULL,
+history_score INTEGER DEFAULT '0' NOT NULL,
 constraint userid_scoretable foreign key (userid) references user(id)
 );
 
@@ -190,3 +194,17 @@ END;
 
 
 CALL getMatchByVenue('The Oval, London','AUSTRALIA');
+
+DROP PROCEDURE IF EXISTS cricapp.updateDailyPredictionByMatch;
+DELIMITER //
+CREATE PROCEDURE cricapp.`updateDailyPredictionByMatch`(IN matchNoIn INTEGER, IN successPointsIn int(11), 
+														IN failurePointsIn int(11), matchResultIn varchar(25))
+BEGIN
+  
+UPDATE `dailyprediction` SET `points` = CASE
+    WHEN prediction = matchResultIn THEN points + successPointsIn
+    ELSE points + failurePointsIn
+    END
+WHERE match_no  = matchNoIn;
+
+END;

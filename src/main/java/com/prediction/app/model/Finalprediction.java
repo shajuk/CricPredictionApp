@@ -26,7 +26,9 @@ public class Finalprediction implements java.io.Serializable {
 	private User user;
 	private String team1;
 	private String team2;
-
+	private int points;
+	
+	
 	public Finalprediction() {
 	}
 
@@ -76,4 +78,12 @@ public class Finalprediction implements java.io.Serializable {
 		this.team2 = team2;
 	}
 
+	@Column(name = "points", nullable = false)
+	public int getPoints() {
+		return this.points;
+	}
+	
+	public void setPoints(int points) {
+		this.points = points;
+	}
 }

@@ -18,4 +18,5 @@ public interface DailyPredictionService {
 	List<Dailyprediction> findDailyPredictionByMatches(Game game);
 	void saveDailyPrediction(Dailyprediction dailyPrediction);
 	List<Dailyprediction> findAllDailyPredictions();
+	void updateDailyPredictionPoints(int matchNo, int successPoints, int failurePoints, String matchResult);
 }

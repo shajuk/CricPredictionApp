@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import com.prediction.app.model.Dailyprediction;
 import com.prediction.app.model.Game;
 import com.prediction.app.model.Scoretable;
+import com.prediction.app.service.DailyPredictionService;
 import com.prediction.app.service.MatchService;
 import com.prediction.app.service.ScoreTableService;
 import com.prediction.app.utils.PredictionAppUtils;
@@ -34,6 +35,9 @@ public class ScoreCalculationFacade {
 	@Autowired
 	ScoreTableService scoreService;
 	
+	@Autowired
+	DailyPredictionService dailyPredictionService;
+	
 	private static int DAILY_PREDICTION_SUCCESS_SCORE=10;
 	private static int DAILY_PREDICTION_FAILURE_SCORE=-3;
 	
@@ -54,8 +58,7 @@ public class ScoreCalculationFacade {
 					updateMatchResultForLatestMatch(matchResult,
 							matchToBeUpdated);
 					
-					updateScoreForDailyPredictions(matchResult,
-							matchToBeUpdated);
+					updateScoreForDailyPredictions(matchToBeUpdated.getMatchNo(),matchResult.getValue());
 				}
 			}
 		}
@@ -71,29 +74,12 @@ public class ScoreCalculationFacade {
 		matchService.updateMatch(matchToBeUpdated);
 	}
 
-	/**
-	 * @param matchResult
-	 * @param matchToBeUpdated
-	 */
+
 	private void updateScoreForDailyPredictions(
-			Map.Entry<String, String> matchResult, Game matchToBeUpdated) {
+			int matchNo, String matchResult) {
 		//Updating the Score table for Dailypredictions starts
-		if(!(matchResult.getValue().equals("NORESULT"))){
-			for(Dailyprediction dp:matchToBeUpdated.getDailypredictions()){
-				System.out.println(" "+dp.getUser().getUsername()+" "+dp.getPrediction());
-				Scoretable scoretable=scoreService.findScoreByUser(dp.getUser());
-				if(null == scoretable){
-					scoretable=new Scoretable();
-					scoretable.setUser(dp.getUser());
-				}
-				scoretable.setHistoryScore(scoretable.getTotalScore());
-				if(matchResult.getValue().equals(dp.getPrediction())){
-					scoretable.setTotalScore(scoretable.getTotalScore()+DAILY_PREDICTION_SUCCESS_SCORE);
-				}else{
-					scoretable.setTotalScore(scoretable.getTotalScore()+DAILY_PREDICTION_FAILURE_SCORE);
-				}
-				scoreService.saveScore(scoretable);
-			}
+		if(!(matchResult.equals("NORESULT"))){
+			dailyPredictionService.updateDailyPredictionPoints(matchNo,DAILY_PREDICTION_SUCCESS_SCORE,DAILY_PREDICTION_FAILURE_SCORE,matchResult);
 		}
 	}
 }

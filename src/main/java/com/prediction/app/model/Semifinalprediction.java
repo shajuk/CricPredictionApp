@@ -28,7 +28,8 @@ public class Semifinalprediction implements java.io.Serializable {
 	private String team2;
 	private String team3;
 	private String team4;
-
+	private int points;
+	
 	public Semifinalprediction() {
 	}
 
@@ -97,6 +98,16 @@ public class Semifinalprediction implements java.io.Serializable {
 
 	public void setTeam4(String team4) {
 		this.team4 = team4;
+	}
+
+
+	@Column(name = "points", nullable = false)
+	public int getPoints() {
+		return this.points;
+	}
+	
+	public void setPoints(int points) {
+		this.points = points;
 	}
 
 }
