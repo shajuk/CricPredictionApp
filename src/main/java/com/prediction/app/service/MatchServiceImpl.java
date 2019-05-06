@@ -54,4 +54,10 @@ public class MatchServiceImpl implements MatchService{
 	public List<Game> findMatchByMatchDateBetween(Date matchDateBegin,Date matchDateEnd) {
 		return matchRepository.findByMatchDateBetween(matchDateBegin,matchDateEnd);
 	}
+	
+	
+	@Override
+	public List<Game> findMatchByVenue(String venue, String team2) {
+		return matchRepository.getMatchByVenue(venue,team2);
+	}
 }

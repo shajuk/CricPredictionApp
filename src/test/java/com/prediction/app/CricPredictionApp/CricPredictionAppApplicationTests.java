@@ -153,6 +153,13 @@ public class CricPredictionAppApplicationTests {
 	}
 	
 	@Test
+	public void findMatchByVenue(){
+		List<Game> matches=matchService.findMatchByVenue("The Oval, London","AUSTRALIA");
+		assertThat(!matches.isEmpty());
+		matches.forEach(m -> System.out.println(" Match No - "+m.getMatchNo()+"Team2 "+m.getTeam2()));
+	}
+	
+	@Test
 	public void findMatchByMatchDate() throws ParseException{
 		List<Game> matches=matchService.findMatchByMatchDateBetween(predictionAppUtils.getYesterdayBeginDateTime(),predictionAppUtils.getYesterdayEndDateTime());
 		assertThat(!matches.isEmpty());

@@ -19,4 +19,5 @@ public interface MatchService {
 	public void saveAllMatches(List<Game> matches);
 	public void updateMatch(Game match);
 	public List<Game> findAllMatches();
+	public List<Game> findMatchByVenue(String venue,String team2);
 }

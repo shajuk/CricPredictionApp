@@ -106,6 +106,7 @@ constraint userid_scoretable foreign key (userid) references user(id)
 );
 
 
+
 INSERT INTO `game` (`match_no`, `team1`, `team2`, `match_date`, `venue`, `match_result`) VALUES (1,'ENGLAND','SOUTH AFRICA','2019-05-30 15:00:00','The Oval, London','');
 INSERT INTO `game` (`match_no`, `team1`, `team2`, `match_date`, `venue`, `match_result`) VALUES (2,'WEST INDIES','PAKISTAN','2019-05-31 15:00:00','Trent Bridge, Nottingham','');
 INSERT INTO `game` (`match_no`, `team1`, `team2`, `match_date`, `venue`, `match_result`) VALUES (3,'NEW ZEALAND','SRI LANKA','2019-06-01 15:00:00','Cardiff Wales Stadium, Cardiff','');
@@ -177,3 +178,15 @@ INSERT INTO `finalprediction` (`userid`, `team1`, `team2`) VALUES (3,'INDIA','AU
 INSERT INTO `championprediction` (`userid`, `prediction`) VALUES (1,'INDIA');
 INSERT INTO `championprediction` (`userid`, `prediction`) VALUES (2,'INDIA');
 INSERT INTO `championprediction` (`userid`, `prediction`) VALUES (3,'INDIA');
+
+
+DROP PROCEDURE IF EXISTS cricapp.getMatchByVenue;
+DELIMITER //
+CREATE PROCEDURE cricapp.`getMatchByVenue`(IN venueIn varchar(255), IN teamNo2 varchar(255))
+BEGIN
+  select * FROM game where venue=venueIn and team2=teamNo2;
+END;
+
+
+
+CALL getMatchByVenue('The Oval, London','AUSTRALIA');
