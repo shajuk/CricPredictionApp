@@ -40,4 +40,10 @@ public class SemiFinalPredictionServiceImpl implements
 	public List<Semifinalprediction> findAllSemiFinalPredictions() {
 		return semiFinalPredictionRepository.findAll(Sort.by(Sort.Direction.ASC,"userid"));
 	}
+	
+	@Override
+	public void updateAllSemiFinalPredictionPoints(String team1, String team2,
+			String team3, String team4, int successPoints) {
+		 semiFinalPredictionRepository.updateAllSemiFinalPredictionPoints(team1, team2, team3, team4, successPoints);
+	}
 }

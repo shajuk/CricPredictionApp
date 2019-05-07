@@ -109,7 +109,7 @@ public class CricPredictionAppApplicationTests {
 	
 	@Test
 	public void saveUser(){
-		User user1=new User();
+		/*User user1=new User();
 		user1.setFirstname("Shaju");
 		user1.setLastname("Kuppelan");
 		user1.setLocation("Kochi");
@@ -130,6 +130,30 @@ public class CricPredictionAppApplicationTests {
 		user.setLastname("KU");
 		user.setLocation("Chennai");
 		user.setUsername("373964");
+		user.setPassword("123");
+		userService.saveUser(user);*/
+		
+		User user1=new User();
+		user1.setFirstname("Sreejith");
+		user1.setLastname("S");
+		user1.setLocation("Coimbatore");
+		user1.setUsername("373965");
+		user1.setPassword("123");
+		userService.saveUser(user1);
+		
+		User user2=new User();
+		user2.setFirstname("Anoop");
+		user2.setLastname("K");
+		user2.setLocation("Kochi");
+		user2.setUsername("373966");
+		user2.setPassword("123");
+		userService.saveUser(user2);
+		
+		User user=new User();
+		user.setFirstname("Nandhini");
+		user.setLastname("D");
+		user.setLocation("Coimbatore");
+		user.setUsername("373967");
 		user.setPassword("123");
 		userService.saveUser(user);
 	}
@@ -366,6 +390,12 @@ public class CricPredictionAppApplicationTests {
 		Semifinalprediction sfp3=semiFinalPredictionService.findSemiFinalPredictionByUser(sandhya);
 		sfp3.setTeam4("PAKISTAN");
 		semiFinalPredictionService.saveSemiFinalPrediction(sfp3);
+	}
+	
+	@Test
+	public void updateAllSemiFinalPrediction(){
+		semiFinalPredictionService.updateAllSemiFinalPredictionPoints("INDIA","SOUTH AFRICA","PAKISTAN","ENGLAND",25);
+		
 	}
 	
 	@Test

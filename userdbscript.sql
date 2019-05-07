@@ -208,3 +208,30 @@ UPDATE `dailyprediction` SET `points` = CASE
 WHERE match_no  = matchNoIn;
 
 END;
+
+CALL updateDailyPredictionByMatch(1, 100, -30, 'SOUTH AFRICA');
+
+
+
+DROP PROCEDURE IF EXISTS cricapp.updateSemiFinalPrediction;
+DELIMITER //
+CREATE PROCEDURE cricapp.`updateSemiFinalPrediction`(IN team1In varchar(25), 
+													 IN team2In varchar(25), 
+													 IN team3In varchar(25),
+													 IN team4In varchar(25),
+													 IN successPointsIn int(11))
+BEGIN
+  
+UPDATE `semifinalprediction` SET `points` = CASE
+    WHEN team1 in (team1In,team2In,team3In,team4In) 
+		THEN points + successPointsIn
+	WHEN team2 in (team1In,team2In,team3In,team4In) 
+		THEN points + successPointsIn
+	WHEN team3 in (team1In,team2In,team3In,team4In) 
+		THEN points + successPointsIn
+	WHEN team4 in (team1In,team2In,team3In,team4In) 
+		THEN points + successPointsIn
+    ELSE points + 0
+    END
+WHERE userid IS NOT NULL;
+END;
