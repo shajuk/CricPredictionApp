@@ -340,6 +340,8 @@ public class CricPredictionAppApplicationTests {
 	@Test
 	public void updateDailyPredictionPoints(){
 		dailyPredictionService.updateDailyPredictionPoints(1, 10, -3, "ENGLAND");
+		dailyPredictionService.updateDailyPredictionPoints(2, 10, -3, "WEST INDIES");
+		dailyPredictionService.updateDailyPredictionPoints(3, 10, -3, "SRI LANKA");
 	}
 	
 	
@@ -440,6 +442,11 @@ public class CricPredictionAppApplicationTests {
 	}
 	
 	@Test
+	public void updateAllFinalPredictions(){
+		finalPredictionService.updateAllFinalPredictionPoints("INDIA","PAKISTAN",25,-5);
+	}
+	
+	@Test
 	public void findFinalPredictionByUser(){
 		User sandhya=userService.findUserByUsername("373964");
 		Finalprediction sfp=finalPredictionService.findFinalPredictionByUser(sandhya);
@@ -479,6 +486,12 @@ public class CricPredictionAppApplicationTests {
 		fp3.setPrediction("INDIA");
 		championPredictionService.saveChampionPrediction(fp3);
 	}
+	
+	@Test
+	public void updateAllChampionPredictionPoints(){
+		championPredictionService.updateAllChampionPredictionPoints("INDIA",25,-5);
+	}
+	
 	
 	@Test
 	public void findChampionPredictionByUser(){

@@ -36,10 +36,16 @@ insert into role value(1, 'USER');
 INSERT INTO `user` (`id`, `firstname`, `lastname`, `location`, `username`, `password`, `active`) VALUES (1,'Shaju','Kuppelan','Kochi','373962','$2a$10$pOLc5e/JU3iZ1ktOkomn7.Le5N5Mxay7CBZpfLI1Zox0FFEQr09ti',1);
 INSERT INTO `user` (`id`, `firstname`, `lastname`, `location`, `username`, `password`, `active`) VALUES (2,'Shibu','Kuppelan','Kochi','373963','$2a$10$FRZHdlSqPmIVlMdDtvvkmetxvedmU2gHUO8rI2ultH8euIflD.KY.',1);
 INSERT INTO `user` (`id`, `firstname`, `lastname`, `location`, `username`, `password`, `active`) VALUES (3,'Sandhya','KU','Chennai','373964','$2a$10$PJyrHC6GIJ6ykEyuck/NtO9Q8PyG94xqupujHuUP.2AExDNhz//P2',1);
+INSERT INTO `user` (`id`, `firstname`, `lastname`, `location`, `username`, `password`, `active`) VALUES (4,'Selvin','Rich','Chennai','373965','$2a$10$pOLc5e/JU3iZ1ktOkomn7.Le5N5Mxay7CBZpfLI1Zox0FFEQr09ti',1);
+INSERT INTO `user` (`id`, `firstname`, `lastname`, `location`, `username`, `password`, `active`) VALUES (5,'Karthik','Perumal','Coimbatore','373966','$2a$10$FRZHdlSqPmIVlMdDtvvkmetxvedmU2gHUO8rI2ultH8euIflD.KY.',1);
+INSERT INTO `user` (`id`, `firstname`, `lastname`, `location`, `username`, `password`, `active`) VALUES (6,'Nandhini','D','Coimbatore','373967','$2a$10$PJyrHC6GIJ6ykEyuck/NtO9Q8PyG94xqupujHuUP.2AExDNhz//P2',1);
 
 insert into user_role values(1,1);
 insert into user_role values(2,1);
 insert into user_role values(3,1);
+insert into user_role values(4,1);
+insert into user_role values(5,1);
+insert into user_role values(6,1);
 
 
 drop table if exists `persistent_logins`;
@@ -172,7 +178,7 @@ INSERT INTO `dailyprediction` (`userid`, `match_no`, `prediction`) VALUES (3,2,'
 INSERT INTO `dailyprediction` (`userid`, `match_no`, `prediction`) VALUES (3,3,'SRI LANKA');
 
 INSERT INTO `semifinalprediction` (`userid`, `team1`, `team2`, `team3`, `team4`) VALUES (1,'INDIA','SOUTH AFRICA','PAKISTAN','ENGLAND');
-INSERT INTO `semifinalprediction` (`userid`, `team1`, `team2`, `team3`, `team4`) VALUES (2,'INDIA','SOUTH AFRICA','AUSTRALIA','ENGLAND');
+INSERT INTO `semifinalprediction` (`userid`, `team1`, `team2`, `team3`, `team4`) VALUES (2,'INDIA','SOUTH AFRICA','ENGLAND','AUSTRALIA');
 INSERT INTO `semifinalprediction` (`userid`, `team1`, `team2`, `team3`, `team4`) VALUES (3,'INDIA','SOUTH AFRICA','SRI LANKA','BANGLADESH');
 INSERT INTO `semifinalprediction` (`userid`, `team1`, `team2`, `team3`, `team4`) VALUES (4,'INDIA','SRI LANKA','BANGLADESH','AUSTRALIA');
 INSERT INTO `semifinalprediction` (`userid`, `team1`, `team2`, `team3`, `team4`) VALUES (5,'SRI LANKA','BANGLADESH','AUSTRALIA','NEW ZEALAND');
@@ -180,11 +186,11 @@ INSERT INTO `semifinalprediction` (`userid`, `team1`, `team2`, `team3`, `team4`)
 
 INSERT INTO `finalprediction` (`userid`, `team1`, `team2`) VALUES (1,'INDIA','PAKISTAN');
 INSERT INTO `finalprediction` (`userid`, `team1`, `team2`) VALUES (2,'INDIA','SOUTH AFRICA');
-INSERT INTO `finalprediction` (`userid`, `team1`, `team2`) VALUES (3,'INDIA','AUSTRALIA');
+INSERT INTO `finalprediction` (`userid`, `team1`, `team2`) VALUES (3,'BANGLADESH','AUSTRALIA');
 
 INSERT INTO `championprediction` (`userid`, `prediction`) VALUES (1,'INDIA');
 INSERT INTO `championprediction` (`userid`, `prediction`) VALUES (2,'INDIA');
-INSERT INTO `championprediction` (`userid`, `prediction`) VALUES (3,'INDIA');
+INSERT INTO `championprediction` (`userid`, `prediction`) VALUES (3,'PAKISTAN');
 
 
 DROP PROCEDURE IF EXISTS cricapp.getMatchByVenue;
@@ -299,3 +305,26 @@ WHERE userid IS NOT NULL;
 END;
 
 -- call updateAllChampionPredictions('INDIA',25,-5);
+
+DROP PROCEDURE IF EXISTS cricapp.updateAllScores;
+DELIMITER //
+CREATE PROCEDURE cricapp.`updateAllScores`()
+BEGIN
+  
+update scoretable set history_score=total_score;
+
+insert into scoretable (select userid, sum(points) as points,0 from dailyprediction group by userid)  ON DUPLICATE KEY UPDATE 
+total_score=VALUES(total_score)+total_score;
+
+insert into scoretable (select userid, sum(points) as points,0 from semifinalprediction group by userid)  ON DUPLICATE KEY UPDATE 
+total_score=VALUES(total_score)+total_score;
+
+insert into scoretable (select userid, sum(points) as points,0 from finalprediction group by userid)  ON DUPLICATE KEY UPDATE 
+total_score=VALUES(total_score)+total_score;
+
+insert into scoretable (select userid, sum(points) as points,0 from championprediction group by userid)  ON DUPLICATE KEY UPDATE 
+total_score=VALUES(total_score)+total_score;
+
+END;
+
+--call updateAllScores();
