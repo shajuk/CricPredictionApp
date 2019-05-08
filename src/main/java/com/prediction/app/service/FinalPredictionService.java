@@ -19,4 +19,5 @@ public interface FinalPredictionService {
 	Finalprediction findFinalPredictionByUser(User user);
 	void saveFinalPrediction(Finalprediction finalprediction);
 	List<Finalprediction> findAllFinalPredictions();
+	void updateAllFinalPredictionPoints(String team1,String team2,int successPoints,int failurePoints);
 }

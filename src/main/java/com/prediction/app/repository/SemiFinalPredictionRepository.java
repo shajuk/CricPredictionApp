@@ -24,7 +24,7 @@ import com.prediction.app.model.Semifinalprediction;
 public interface SemiFinalPredictionRepository extends JpaRepository<Semifinalprediction, Integer> {
 	@Modifying
 	@Transactional
-	@Query(nativeQuery = true,value = "call updateSemiFinalPrediction(:team1In,:team2In,:team3In,:team4In,:successPointsIn)")   // call store procedure with arguments
-	void updateAllSemiFinalPredictionPoints(@Param("team1In") String team1,@Param("team2In") String team2, @Param("team3In") String team3,@Param("team4In") String team4, @Param("successPointsIn") int successPoints);
+	@Query(nativeQuery = true,value = "call updateSemiFinalPrediction(:team1In,:team2In,:team3In,:team4In,:successPointsIn,:failurePointsIn)")   // call store procedure with arguments
+	void updateAllSemiFinalPredictionPoints(@Param("team1In") String team1,@Param("team2In") String team2, @Param("team3In") String team3,@Param("team4In") String team4, @Param("successPointsIn") int successPoints, @Param("failurePointsIn") int failurePoints);
 
 }

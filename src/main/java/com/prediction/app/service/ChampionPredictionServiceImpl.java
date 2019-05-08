@@ -36,4 +36,9 @@ public class ChampionPredictionServiceImpl implements ChampionPredictionService 
 		return championPredictionRepository.findAll();
 	}
 
+	@Override
+	public void updateAllChampionPredictionPoints(String champion,
+			int successPoints, int failurePoints) {
+		championPredictionRepository.updateAllChampionPredictionPoints(champion,successPoints,failurePoints);
+	}
 }

@@ -22,6 +22,10 @@ import org.hibernate.annotations.Parameter;
 @Table(name = "scoretable", catalog = "cricapp")
 public class Scoretable implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int userid;
 	private User user;
 	private int totalScore;

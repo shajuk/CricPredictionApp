@@ -18,5 +18,5 @@ public interface SemiFinalPredictionService {
 	Semifinalprediction findSemiFinalPredictionByUser(User user);
 	void saveSemiFinalPrediction(Semifinalprediction semifinalprediction);
 	List<Semifinalprediction> findAllSemiFinalPredictions();
-	void updateAllSemiFinalPredictionPoints(String team1,String team2,String team3,String team4,int successPoints);
+	void updateAllSemiFinalPredictionPoints(String team1,String team2,String team3,String team4,int successPoints,int failurePoints);
 }

@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
@@ -22,6 +23,10 @@ import org.hibernate.annotations.Parameter;
 @Table(name = "championprediction", catalog = "cricapp")
 public class Championprediction implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int userid;
 	private User user;
 	private String prediction;

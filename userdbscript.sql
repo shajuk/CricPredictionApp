@@ -173,7 +173,10 @@ INSERT INTO `dailyprediction` (`userid`, `match_no`, `prediction`) VALUES (3,3,'
 
 INSERT INTO `semifinalprediction` (`userid`, `team1`, `team2`, `team3`, `team4`) VALUES (1,'INDIA','SOUTH AFRICA','PAKISTAN','ENGLAND');
 INSERT INTO `semifinalprediction` (`userid`, `team1`, `team2`, `team3`, `team4`) VALUES (2,'INDIA','SOUTH AFRICA','AUSTRALIA','ENGLAND');
-INSERT INTO `semifinalprediction` (`userid`, `team1`, `team2`, `team3`, `team4`) VALUES (3,'INDIA','SOUTH AFRICA','SRI LANKA','PAKISTAN');
+INSERT INTO `semifinalprediction` (`userid`, `team1`, `team2`, `team3`, `team4`) VALUES (3,'INDIA','SOUTH AFRICA','SRI LANKA','BANGLADESH');
+INSERT INTO `semifinalprediction` (`userid`, `team1`, `team2`, `team3`, `team4`) VALUES (4,'INDIA','SRI LANKA','BANGLADESH','AUSTRALIA');
+INSERT INTO `semifinalprediction` (`userid`, `team1`, `team2`, `team3`, `team4`) VALUES (5,'SRI LANKA','BANGLADESH','AUSTRALIA','NEW ZEALAND');
+INSERT INTO `semifinalprediction` (`userid`, `team1`, `team2`, `team3`, `team4`) VALUES (6,'AUSTRALIA','AFGHANISTAN','SRI LANKA','BANGLADESH');
 
 INSERT INTO `finalprediction` (`userid`, `team1`, `team2`) VALUES (1,'INDIA','PAKISTAN');
 INSERT INTO `finalprediction` (`userid`, `team1`, `team2`) VALUES (2,'INDIA','SOUTH AFRICA');
@@ -193,7 +196,7 @@ END;
 
 
 
-CALL getMatchByVenue('The Oval, London','AUSTRALIA');
+-- CALL getMatchByVenue('The Oval, London','AUSTRALIA');
 
 DROP PROCEDURE IF EXISTS cricapp.updateDailyPredictionByMatch;
 DELIMITER //
@@ -209,8 +212,7 @@ WHERE match_no  = matchNoIn;
 
 END;
 
-CALL updateDailyPredictionByMatch(1, 100, -30, 'SOUTH AFRICA');
-
+-- CALL updateDailyPredictionByMatch(1, 100, -30, 'SOUTH AFRICA');
 
 
 DROP PROCEDURE IF EXISTS cricapp.updateSemiFinalPrediction;
@@ -219,19 +221,81 @@ CREATE PROCEDURE cricapp.`updateSemiFinalPrediction`(IN team1In varchar(25),
 													 IN team2In varchar(25), 
 													 IN team3In varchar(25),
 													 IN team4In varchar(25),
-													 IN successPointsIn int(11))
+													 IN successPointsIn int(11),
+													 IN failurePointsIn int(11))
 BEGIN
   
+UPDATE `semifinalprediction` SET `points` =points + successPointsIn WHERE team1 in (team1In,team2In,team3In,team4In);
+  
+UPDATE `semifinalprediction` SET `points` =points + successPointsIn WHERE team2 in (team1In,team2In,team3In,team4In);
+  
+UPDATE `semifinalprediction` SET `points` =points + successPointsIn WHERE team3 in (team1In,team2In,team3In,team4In);
+  
+UPDATE `semifinalprediction` SET `points` =points + successPointsIn WHERE team4 in (team1In,team2In,team3In,team4In);
+
+
 UPDATE `semifinalprediction` SET `points` = CASE
-    WHEN team1 in (team1In,team2In,team3In,team4In) 
-		THEN points + successPointsIn
-	WHEN team2 in (team1In,team2In,team3In,team4In) 
-		THEN points + successPointsIn
-	WHEN team3 in (team1In,team2In,team3In,team4In) 
-		THEN points + successPointsIn
-	WHEN team4 in (team1In,team2In,team3In,team4In) 
-		THEN points + successPointsIn
-    ELSE points + 0
+	WHEN  points = (successPointsIn * 4)
+		THEN (successPointsIn * 4) 
+    WHEN  points =  (successPointsIn * 3)
+		THEN (successPointsIn * 3) + failurePointsIn
+    WHEN  points = (successPointsIn * 2)
+		THEN (successPointsIn * 2) + failurePointsIn
+    WHEN  points = (successPointsIn * 1)
+		THEN (successPointsIn * 1) + failurePointsIn
+    WHEN  points = 0
+		THEN (failurePointsIn * 4)
+    ELSE points = 0
+    END
+WHERE userid IS NOT NULL ;
+
+END;
+
+
+-- call updateSemiFinalPrediction('INDIA','SOUTH AFRICA','PAKISTAN','ENGLAND',25,-5);
+
+DROP PROCEDURE IF EXISTS cricapp.updateAllFinalPredictions;
+DELIMITER //
+CREATE PROCEDURE cricapp.`updateAllFinalPredictions`(IN team1In varchar(25), 
+													 IN team2In varchar(25), 
+													 IN successPointsIn int(11),
+													 IN failurePointsIn int(11))
+BEGIN
+  
+UPDATE `finalprediction` SET `points` =points + successPointsIn WHERE team1 in (team1In,team2In);
+  
+UPDATE `finalprediction` SET `points` =points + successPointsIn WHERE team2 in (team1In,team2In);
+ 
+UPDATE `finalprediction` SET `points` = CASE
+	WHEN  points = (successPointsIn * 2)
+		THEN (successPointsIn * 2) 
+    WHEN  points = (successPointsIn * 1)
+		THEN (successPointsIn * 1) + failurePointsIn
+    WHEN  points = 0
+		THEN (failurePointsIn * 2)
+    ELSE points = 0
     END
 WHERE userid IS NOT NULL;
+
 END;
+
+
+-- call updateAllFinalPredictions('INDIA','PAKISTAN',25,-5);
+
+
+DROP PROCEDURE IF EXISTS cricapp.updateAllChampionPredictions;
+DELIMITER //
+CREATE PROCEDURE cricapp.`updateAllChampionPredictions`(IN championIn varchar(25), 
+													    IN successPointsIn int(11),
+													    IN failurePointsIn int(11))
+BEGIN
+  
+UPDATE `championprediction` SET `points` = CASE
+    WHEN prediction = championIn THEN points + successPointsIn
+		ELSE points + failurePointsIn
+    END
+WHERE userid IS NOT NULL;
+
+END;
+
+-- call updateAllChampionPredictions('INDIA',25,-5);

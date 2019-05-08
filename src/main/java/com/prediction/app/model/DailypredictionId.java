@@ -13,6 +13,10 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class DailypredictionId implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int userid;
 	private int matchNo;
 

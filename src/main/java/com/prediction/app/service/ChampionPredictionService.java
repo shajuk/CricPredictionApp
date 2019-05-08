@@ -16,4 +16,5 @@ public interface ChampionPredictionService {
 	Championprediction findChampionPredictionByUser(User user);
 	void saveChampionPrediction(Championprediction championprediction);
 	List<Championprediction> findAllChampionPredictions();
+	void updateAllChampionPredictionPoints(String champion,int successPoints,int failurePoints);
 }

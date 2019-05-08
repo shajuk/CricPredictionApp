@@ -19,6 +19,10 @@ import javax.persistence.TemporalType;
 @Table(name = "persistent_logins", catalog = "cricapp")
 public class PersistentLogins implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String series;
 	private String username;
 	private String token;

@@ -23,6 +23,10 @@ import javax.persistence.TemporalType;
 @Table(name = "game", catalog = "cricapp")
 public class Game implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int matchNo;
 	private String team1;
 	private String team2;

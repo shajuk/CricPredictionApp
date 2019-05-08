@@ -394,7 +394,7 @@ public class CricPredictionAppApplicationTests {
 	
 	@Test
 	public void updateAllSemiFinalPrediction(){
-		semiFinalPredictionService.updateAllSemiFinalPredictionPoints("INDIA","SOUTH AFRICA","PAKISTAN","ENGLAND",25);
+		semiFinalPredictionService.updateAllSemiFinalPredictionPoints("INDIA","SOUTH AFRICA","PAKISTAN","ENGLAND",25,-5);
 		
 	}
 	

@@ -22,6 +22,10 @@ import org.hibernate.annotations.Parameter;
 @Table(name = "finalprediction", catalog = "cricapp")
 public class Finalprediction implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int userid;
 	private User user;
 	private String team1;

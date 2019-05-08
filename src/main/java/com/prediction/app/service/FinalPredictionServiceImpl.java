@@ -40,4 +40,9 @@ public class FinalPredictionServiceImpl implements FinalPredictionService {
 		return finalPredictionRepository.findAll();
 	}
 
+	@Override
+	public void updateAllFinalPredictionPoints(String team1, String team2,
+			int successPoints, int failurePoints) {
+		finalPredictionRepository.updateAllFinalPredictionPoints(team1,team2,successPoints,failurePoints);
+	}
 }

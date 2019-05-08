@@ -21,6 +21,10 @@ import javax.persistence.Table;
 @Table(name = "dailyprediction", catalog = "cricapp")
 public class Dailyprediction implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private DailypredictionId id;
 	private Game game;
 	private User user;
