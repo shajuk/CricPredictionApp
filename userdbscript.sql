@@ -33,20 +33,6 @@ create table `user_role`(
 
 insert into role value(1, 'USER');
 
-INSERT INTO `user` (`id`, `firstname`, `lastname`, `location`, `username`, `password`, `active`) VALUES (1,'Shaju','Kuppelan','Kochi','373962','$2a$10$pOLc5e/JU3iZ1ktOkomn7.Le5N5Mxay7CBZpfLI1Zox0FFEQr09ti',1);
-INSERT INTO `user` (`id`, `firstname`, `lastname`, `location`, `username`, `password`, `active`) VALUES (2,'Shibu','Kuppelan','Kochi','373963','$2a$10$FRZHdlSqPmIVlMdDtvvkmetxvedmU2gHUO8rI2ultH8euIflD.KY.',1);
-INSERT INTO `user` (`id`, `firstname`, `lastname`, `location`, `username`, `password`, `active`) VALUES (3,'Sandhya','KU','Chennai','373964','$2a$10$PJyrHC6GIJ6ykEyuck/NtO9Q8PyG94xqupujHuUP.2AExDNhz//P2',1);
-INSERT INTO `user` (`id`, `firstname`, `lastname`, `location`, `username`, `password`, `active`) VALUES (4,'Selvin','Rich','Chennai','373965','$2a$10$pOLc5e/JU3iZ1ktOkomn7.Le5N5Mxay7CBZpfLI1Zox0FFEQr09ti',1);
-INSERT INTO `user` (`id`, `firstname`, `lastname`, `location`, `username`, `password`, `active`) VALUES (5,'Karthik','Perumal','Coimbatore','373966','$2a$10$FRZHdlSqPmIVlMdDtvvkmetxvedmU2gHUO8rI2ultH8euIflD.KY.',1);
-INSERT INTO `user` (`id`, `firstname`, `lastname`, `location`, `username`, `password`, `active`) VALUES (6,'Nandhini','D','Coimbatore','373967','$2a$10$PJyrHC6GIJ6ykEyuck/NtO9Q8PyG94xqupujHuUP.2AExDNhz//P2',1);
-
-insert into user_role values(1,1);
-insert into user_role values(2,1);
-insert into user_role values(3,1);
-insert into user_role values(4,1);
-insert into user_role values(5,1);
-insert into user_role values(6,1);
-
 
 drop table if exists `persistent_logins`;
 create table `persistent_logins`(
@@ -167,31 +153,7 @@ INSERT INTO `game` (`match_no`, `team1`, `team2`, `match_date`, `venue`, `match_
 INSERT INTO `game` (`match_no`, `team1`, `team2`, `match_date`, `venue`, `match_result`) VALUES (48,'TBC','TBC','2019-07-14 15:00:00','Lord\'s Cricket Ground, London','');
 
 
-INSERT INTO `dailyprediction` (`userid`, `match_no`, `prediction`) VALUES (1,1,'ENGLAND');
-INSERT INTO `dailyprediction` (`userid`, `match_no`, `prediction`) VALUES (1,2,'WEST INDIES');
-INSERT INTO `dailyprediction` (`userid`, `match_no`, `prediction`) VALUES (1,3,'NEW ZEALAND');
-INSERT INTO `dailyprediction` (`userid`, `match_no`, `prediction`) VALUES (2,1,'SOUTH AFRICA');
-INSERT INTO `dailyprediction` (`userid`, `match_no`, `prediction`) VALUES (2,2,'PAKISTAN');
-INSERT INTO `dailyprediction` (`userid`, `match_no`, `prediction`) VALUES (2,3,'NEW ZEALAND');
-INSERT INTO `dailyprediction` (`userid`, `match_no`, `prediction`) VALUES (3,1,'SOUTH AFRICA');
-INSERT INTO `dailyprediction` (`userid`, `match_no`, `prediction`) VALUES (3,2,'WEST INDIES');
-INSERT INTO `dailyprediction` (`userid`, `match_no`, `prediction`) VALUES (3,3,'SRI LANKA');
-
-INSERT INTO `semifinalprediction` (`userid`, `team1`, `team2`, `team3`, `team4`) VALUES (1,'INDIA','SOUTH AFRICA','PAKISTAN','ENGLAND');
-INSERT INTO `semifinalprediction` (`userid`, `team1`, `team2`, `team3`, `team4`) VALUES (2,'INDIA','SOUTH AFRICA','ENGLAND','AUSTRALIA');
-INSERT INTO `semifinalprediction` (`userid`, `team1`, `team2`, `team3`, `team4`) VALUES (3,'INDIA','SOUTH AFRICA','SRI LANKA','BANGLADESH');
-INSERT INTO `semifinalprediction` (`userid`, `team1`, `team2`, `team3`, `team4`) VALUES (4,'INDIA','SRI LANKA','BANGLADESH','AUSTRALIA');
-INSERT INTO `semifinalprediction` (`userid`, `team1`, `team2`, `team3`, `team4`) VALUES (5,'SRI LANKA','BANGLADESH','AUSTRALIA','NEW ZEALAND');
-INSERT INTO `semifinalprediction` (`userid`, `team1`, `team2`, `team3`, `team4`) VALUES (6,'AUSTRALIA','AFGHANISTAN','SRI LANKA','BANGLADESH');
-
-INSERT INTO `finalprediction` (`userid`, `team1`, `team2`) VALUES (1,'INDIA','PAKISTAN');
-INSERT INTO `finalprediction` (`userid`, `team1`, `team2`) VALUES (2,'INDIA','SOUTH AFRICA');
-INSERT INTO `finalprediction` (`userid`, `team1`, `team2`) VALUES (3,'BANGLADESH','AUSTRALIA');
-
-INSERT INTO `championprediction` (`userid`, `prediction`) VALUES (1,'INDIA');
-INSERT INTO `championprediction` (`userid`, `prediction`) VALUES (2,'INDIA');
-INSERT INTO `championprediction` (`userid`, `prediction`) VALUES (3,'PAKISTAN');
-
+-- Stored PROCEDURE starts
 
 DROP PROCEDURE IF EXISTS cricapp.getMatchByVenue;
 DELIMITER //

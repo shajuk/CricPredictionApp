@@ -16,4 +16,5 @@ public interface ScoreTableService {
 	Scoretable findScoreByUser(User user);
 	void saveScore(Scoretable scoreTable);
 	List<Scoretable> findAllScores();
+	void updateAllScores();
 }

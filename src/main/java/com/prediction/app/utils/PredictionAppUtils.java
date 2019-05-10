@@ -49,4 +49,8 @@ public class PredictionAppUtils {
 		}
 		return null;
 	}
+	
+	public boolean isNullOrEmpty(String string) {
+		return null==string || string.trim().isEmpty();
+	}
 }

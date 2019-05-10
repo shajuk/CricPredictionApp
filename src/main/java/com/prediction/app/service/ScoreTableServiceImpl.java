@@ -37,4 +37,10 @@ public class ScoreTableServiceImpl implements ScoreTableService {
 		return scoreTableRepository.findAll();
 	}
 
+	
+	@Override
+	public void updateAllScores() {
+		scoreTableRepository.updateAllScores();
+	}
+
 }

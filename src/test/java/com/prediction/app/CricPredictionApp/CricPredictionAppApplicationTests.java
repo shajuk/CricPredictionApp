@@ -3,7 +3,9 @@ package com.prediction.app.CricPredictionApp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -163,9 +165,11 @@ public class CricPredictionAppApplicationTests {
 	
 	@Test
 	public void saveMatch() throws ParseException{
-		Game matches=new Game(1, "ENGLAND", "SOUTH AFRICA", formatter.parse("30/05/2019 15:00:00"), "The Oval, London","");
+		Game matches=new Game(44, "SRI LANKA", "INDIA", formatter.parse("09/05/2019 15:00:00"), "Headingley, Leeds","");
 		matchService.saveMatch(matches);
-		Game savedMatch=matchService.findMatchByMatchNo(1);
+		Game matches1=new Game(45, "AUSTRALIA", "SOUTH AFRICA", formatter.parse("09/05/2019 18:00:00"), "Old Trafford, Manchester","");
+		matchService.saveMatch(matches1);
+		Game savedMatch=matchService.findMatchByMatchNo(44);
 		assertThat(matches!=savedMatch && matches.getTeam1().equals(savedMatch.getTeam1()));
 	}	
 	
@@ -548,6 +552,11 @@ public class CricPredictionAppApplicationTests {
 				);
 	}
 	
+	@Test
+	public void updateAllScoresProcedure(){
+		scoreService.updateAllScores();
+	}
+	
 	@Autowired
 	PredictionAppUtils predictionAppUtils;
 	
@@ -564,4 +573,28 @@ public class CricPredictionAppApplicationTests {
 	public void updateAllScores(){
 		scoreCalculationFacade.updateAllScores();
 	}
+	
+	@Test
+	public void updateTeamDetailsForSemiFinals(){
+		Map<String,Map<String,String>> semiFinalTeams=new HashMap<>();
+		Map<String,String> semiFina1One=new HashMap<>();
+		semiFina1One.put("semiFinalTeam1", "1ST");
+		semiFina1One.put("semiFinalTeam2", "4TH");
+		semiFinalTeams.put("semiFina1One", semiFina1One);
+		Map<String,String> semiFina1Two=new HashMap<>();
+		semiFina1Two.put("semiFinalTeam3", "2ND");
+		semiFina1Two.put("semiFinalTeam4", "3RD");
+		semiFinalTeams.put("semiFina1Two", semiFina1Two);
+		scoreCalculationFacade.updateTeamDetailsForSemiFinals(semiFinalTeams);
+	}
+	
+	@Test
+	public void updateTeamDetailsForFinals(){
+		Map<String,String> finalTeams=new HashMap<>();
+		finalTeams.put("finalTeam1", "INDIA");
+		finalTeams.put("finalTeam2", "SOUTH AFRICA");
+		scoreCalculationFacade.updateTeamDetailsForFinals(finalTeams);
+		scoreCalculationFacade.updateScoresForFinalPredictions(finalTeams);
+	}
+	
 }
