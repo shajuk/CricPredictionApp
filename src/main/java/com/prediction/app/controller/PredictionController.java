@@ -1,19 +1,26 @@
 package com.prediction.app.controller;
 
+import javax.annotation.PreDestroy;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.prediction.app.facade.PredictionFacade;
+import com.prediction.app.model.PredictionForm;
 import com.prediction.app.model.User;
 import com.prediction.app.service.UserService;
 
@@ -23,10 +30,19 @@ import com.prediction.app.service.UserService;
  */
 
 @Controller
-public class UserController {
+@SessionAttributes(types={PredictionForm.class})
+public class PredictionController {
 
 	@Autowired
 	UserService userService;
+	
+	@Autowired
+	PredictionFacade predictionFacade;
+	
+	@ModelAttribute("predictionForm")
+	public PredictionForm getPredictionForm(){
+		return new PredictionForm();
+	}
 	
 	@RequestMapping(value = {"/","/login"}, method = RequestMethod.GET)
 	public ModelAndView login(){
@@ -62,7 +78,7 @@ public class UserController {
 		return model;
 	}
 	
-	@RequestMapping(value = {"/home/home"}, method = RequestMethod.GET)
+	@RequestMapping(value = {"/prediction/home"}, method = RequestMethod.GET)
 	public ModelAndView home(){
 		ModelAndView model=new ModelAndView();
 		Authentication auth=SecurityContextHolder.getContext().getAuthentication();
@@ -81,11 +97,11 @@ public class UserController {
 	
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public String logout(HttpServletRequest request,
-			HttpServletResponse response) {
+			HttpServletResponse response, SessionStatus sessionStatus) {
 		
 		Authentication authentication = SecurityContextHolder.getContext()
 				.getAuthentication();
-		
+		sessionStatus.setComplete();
 		if (authentication != null) {
 			new SecurityContextLogoutHandler().logout(request, response,
 					authentication);
@@ -93,4 +109,37 @@ public class UserController {
 
 		return "redirect:/";
 	}
+	
+	@RequestMapping(value = {"/prediction/dp"}, method = RequestMethod.GET)
+	public ModelAndView dailyPrediction(){
+		ModelAndView model=new ModelAndView();
+		Authentication auth=SecurityContextHolder.getContext().getAuthentication();
+		User user=userService.findUserByUsername(auth.getName());
+		model.addObject("userName", user.getFirstname());
+		PredictionForm predictionForm=getPredictionForm();
+		predictionForm.setUser(user);
+		predictionFacade.prepareAndGetPredictionForm(predictionForm);
+		model.addObject("predictionForm",predictionForm);
+		model.setViewName("home/dailyprediction");
+		return model;
+	}
+	
+	@RequestMapping(value = {"/prediction/dp"}, method = RequestMethod.POST)
+	public ModelAndView savePrediction(@Valid @ModelAttribute PredictionForm predictionForm, 
+			BindingResult bindingResult){
+		ModelAndView model=new ModelAndView();
+		Authentication auth=SecurityContextHolder.getContext().getAuthentication();
+		User user=userService.findUserByUsername(auth.getName());
+		model.addObject("userName", user.getFirstname());
+		model.addObject("predictionForm",predictionForm);
+		predictionFacade.validateForm(predictionForm,bindingResult);
+		model.setViewName("home/dailyprediction");
+		if(!bindingResult.hasErrors()){
+			predictionFacade.saveDailyPredictions(predictionForm);
+			model.addObject("successMessage", "Your choice is saved successfully !");
+		}
+		
+		return model;
+	}
+	
 }

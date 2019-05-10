@@ -16,6 +16,7 @@ import com.prediction.app.model.User;
 public interface DailyPredictionService {
 	List<Dailyprediction> findDailyPredictionByUser(User user);
 	List<Dailyprediction> findDailyPredictionByMatches(Game game);
+	Dailyprediction findDailyPredictionByDailyPrediction(int userid,int matchNo);
 	void saveDailyPrediction(Dailyprediction dailyPrediction);
 	List<Dailyprediction> findAllDailyPredictions();
 	void updateDailyPredictionPoints(int matchNo, int successPoints, int failurePoints, String matchResult);

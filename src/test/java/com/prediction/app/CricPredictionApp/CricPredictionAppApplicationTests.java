@@ -3,6 +3,7 @@ package com.prediction.app.CricPredictionApp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -189,7 +190,7 @@ public class CricPredictionAppApplicationTests {
 	
 	@Test
 	public void findMatchByMatchDate() throws ParseException{
-		List<Game> matches=matchService.findMatchByMatchDateBetween(predictionAppUtils.getYesterdayBeginDateTime(),predictionAppUtils.getYesterdayEndDateTime());
+		List<Game> matches=matchService.findMatchByMatchDateBetween(predictionAppUtils.getBeginDateTimeToday(),predictionAppUtils.getEndDateTimeToday());
 		assertThat(!matches.isEmpty());
 		matches.forEach(m -> System.out.println(" Match No - "+m.getMatchNo()+" Team1: "+m.getTeam1()+" Team2: "+m.getTeam2()));
 	}
@@ -564,6 +565,11 @@ public class CricPredictionAppApplicationTests {
 	public void printDates(){
 		System.out.println(predictionAppUtils.getYesterdayBeginDateTime());
 		System.out.println(predictionAppUtils.getYesterdayEndDateTime());
+	}
+	
+	@Test
+	public void isPredictionFreezed(){
+		System.out.println(predictionAppUtils.isPredictionFreezed(new Date()));
 	}
 	
 	@Autowired

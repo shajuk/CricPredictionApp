@@ -16,6 +16,7 @@ import com.prediction.app.model.Game;
 import com.prediction.app.model.User;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -29,7 +30,6 @@ import javax.transaction.Transactional;
 public interface DailyPredictionRepository extends JpaRepository<Dailyprediction, DailypredictionId>{
 	List<Dailyprediction> findByUser(User user);
 	List<Dailyprediction> findByGame(Game game);
-	
 	@Modifying
 	@Transactional
 	@Query(nativeQuery = true,value = "call updateDailyPredictionByMatch(:matchNoIn,:successPointsIn,:failurePointsIn,:matchResultIn)")   // call store procedure with arguments

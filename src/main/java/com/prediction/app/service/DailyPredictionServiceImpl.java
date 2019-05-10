@@ -34,7 +34,7 @@ public class DailyPredictionServiceImpl implements DailyPredictionService {
 
 	@Override
 	public void saveDailyPrediction(Dailyprediction dailyPrediction) {
-		dailyPredictionRepository.saveAndFlush(dailyPrediction);
+		Dailyprediction dp=dailyPredictionRepository.saveAndFlush(dailyPrediction);
 	}
 
 	@Override
@@ -51,5 +51,11 @@ public class DailyPredictionServiceImpl implements DailyPredictionService {
 	public void updateDailyPredictionPoints(int matchNo, int successPoints,
 			int failurePoints, String matchResult) {
 		dailyPredictionRepository.updateDailyPredictionByMatch(matchNo,successPoints,failurePoints,matchResult);
+	}
+
+	
+	public Dailyprediction findDailyPredictionByDailyPrediction(int userid,int matchNo) {
+		DailypredictionId id=new DailypredictionId(userid,matchNo);
+		return dailyPredictionRepository.findById(id).orElse(null);
 	}
 }
