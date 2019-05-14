@@ -79,7 +79,7 @@
 
 	  <div th:each="team, itemStat : *{teams}" th:class="${itemStat.index  == 4 or itemStat.index  == 9 } ?  row : ''">
 			 <div class="col-sm-2"  style="text-align: left;"> 
-			 		<div> <img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image"></div>
+			 		<div> <img th:src="'/images/'+${team}+'.png'" class="img-responsive"  alt="Image"></div>
 		      		<input type="radio" th:field="*{selectedChampion}" th:value="${team}"  />
 			   		<label th:text="${team}">				</label>	
 		    </div>
