@@ -76,18 +76,19 @@
   
     <div class="alert alert-success" role="alert" th:if="${successMessage}" th:utext="${successMessage}"></div>
 
-	  <div th:each="team, itemStat : *{teams}" class="row">
-			 <div class="col-sm-4"> 
-		      <!-- <img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">-->
-		     	 	<input type="checkbox"  th:field="*{selectedFinalists}"
+	  <div th:each="team, itemStat : *{teams}" th:class="${itemStat.index  == 4 or itemStat.index  == 9 } ?  row : ''">
+			 
+		    <div class="col-sm-2" style="text-align: left;">
+		    	<div > <img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image"></div>
+		    	<input type="checkbox"  th:field="*{selectedFinalists}"
         					th:value="${team}" />
-    				<label 
-        th:for="${#ids.prev('selectedFinalists')}"
-        th:text="${team}"></label>
+		   		 <label th:for="${#ids.prev('selectedFinalists')}" th:text="${team}"></label> 
 		    </div>
+		     
 	  </div>
 	  
 	  <div class="row pts">
+	  
 	  	<button type="submit" class="btn btn-success">
 							<i class="fa fa-user-plus"></i> SAVE
 		</button>

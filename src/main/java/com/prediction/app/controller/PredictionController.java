@@ -191,6 +191,33 @@ public class PredictionController {
 		return model;
 	}
 	
+	@RequestMapping(value = {"/prediction/chmp"}, method = RequestMethod.GET)
+	public ModelAndView championPrediction(){
+		ModelAndView model=new ModelAndView();
+		PredictionForm predictionForm = prepareModelAndForm(model);
+		model.addObject("predictionForm",predictionForm);
+		predictionFacade.prepareAndGetPredictionForm(predictionForm);
+		model.setViewName("home/champion");
+		return model;
+	}
+	
+	@RequestMapping(value = {"/prediction/chmp"}, method = RequestMethod.POST)
+	public ModelAndView saveChampionPrediction(@Valid @ModelAttribute PredictionForm predictionForm, 
+			BindingResult bindingResult){
+		ModelAndView model=new ModelAndView();
+		Authentication auth=SecurityContextHolder.getContext().getAuthentication();
+		User user=userService.findUserByUsername(auth.getName());
+		model.addObject("userName", user.getFirstname());
+		model.addObject("predictionForm",predictionForm);
+		predictionFacade.validateChampion(predictionForm,bindingResult);
+		model.setViewName("home/champion");
+		if(!bindingResult.hasErrors()){
+			predictionFacade.saveChampionPredictions(predictionForm);
+			model.addObject("successMessage", "Your selection is saved successfully !");
+		}
+		return model;
+	}
+	
 	@RequestMapping(value = {"/prediction/fixture"}, method = RequestMethod.GET)
 	public ModelAndView getFixture() {
 		ModelAndView model=new ModelAndView();

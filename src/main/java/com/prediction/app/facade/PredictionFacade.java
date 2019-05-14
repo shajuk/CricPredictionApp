@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindingResult;
 
+import com.prediction.app.model.Championprediction;
 import com.prediction.app.model.Dailyprediction;
 import com.prediction.app.model.DailypredictionId;
 import com.prediction.app.model.Finalprediction;
@@ -22,6 +23,7 @@ import com.prediction.app.model.Prediction;
 import com.prediction.app.model.PredictionForm;
 import com.prediction.app.model.Semifinalprediction;
 import com.prediction.app.model.User;
+import com.prediction.app.service.ChampionPredictionService;
 import com.prediction.app.service.DailyPredictionService;
 import com.prediction.app.service.FinalPredictionService;
 import com.prediction.app.service.MatchService;
@@ -54,6 +56,9 @@ public class PredictionFacade {
 	
 	@Autowired
 	FinalPredictionService finalPredictionService;
+	
+	@Autowired
+	ChampionPredictionService championPredictionService;
 	
 	public void prepareAndGetPredictionForm(PredictionForm form) {
 		form.getPredictions().clear();
@@ -183,6 +188,17 @@ public class PredictionFacade {
 		List<Game> matches=matchService.findMatchByMatchDateBetween(predictionAppUtils.getMatchBeginDate(MATCH_BEGIN_DATE), predictionAppUtils.getMatchEndDate(MATCH_END_DATE));
 		if(!CollectionUtils.isEmpty(matches)) {
 			scheduleForm.getGames().addAll(matches);
+		}
+	}
+
+
+	public void saveChampionPredictions(@Valid PredictionForm predictionForm) {
+		Championprediction championprediction=championPredictionService.findChampionPredictionByUser(predictionForm.getUser());
+		if(null==championprediction) {
+			championPredictionService.saveChampionPrediction(new Championprediction(predictionForm.getUser(),predictionForm.getSelectedChampion()));
+		}else {
+			championprediction.setPrediction(predictionForm.getSelectedChampion());
+			championPredictionService.saveChampionPrediction(championprediction);
 		}
 	}
 	
