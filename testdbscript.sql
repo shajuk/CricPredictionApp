@@ -124,11 +124,11 @@ constraint match_no_dailyprediction foreign key (match_no) references game(match
 );
 
 
-INSERT INTO `game` (`match_no`, `team1`, `team2`, `match_date`, `venue`, `match_result`) VALUES (44,'SRI LANKA','INDIA','2019-05-09 15:00:00','Headingley, Leeds','');
-INSERT INTO `game` (`match_no`, `team1`, `team2`, `match_date`, `venue`, `match_result`) VALUES (45,'AUSTRALIA','SOUTH AFRICA','2019-05-09 18:00:00','Old Trafford, Manchester','');
-INSERT INTO `game` (`match_no`, `team1`, `team2`, `match_date`, `venue`, `match_result`) VALUES (46,'1ST','4TH','2019-05-09 15:00:00','Old Trafford, Manchester','');
-INSERT INTO `game` (`match_no`, `team1`, `team2`, `match_date`, `venue`, `match_result`) VALUES (47,'2ND','3RD','2019-05-09 15:00:00','Edgbaston, Birmingham','');
-INSERT INTO `game` (`match_no`, `team1`, `team2`, `match_date`, `venue`, `match_result`) VALUES (48,'TBC','TBC','2019-05-09 15:00:00','Lord\'s Cricket Ground, London','');
+INSERT INTO `game` (`match_no`, `team1`, `team2`, `match_date`, `venue`, `match_result`) VALUES (44,'SRI LANKA','INDIA','2019-05-14 15:00:00','Headingley, Leeds','');
+INSERT INTO `game` (`match_no`, `team1`, `team2`, `match_date`, `venue`, `match_result`) VALUES (45,'AUSTRALIA','SOUTH AFRICA','2019-05-14 18:00:00','Old Trafford, Manchester','');
+INSERT INTO `game` (`match_no`, `team1`, `team2`, `match_date`, `venue`, `match_result`) VALUES (46,'1ST','4TH','2019-05-15 15:00:00','Old Trafford, Manchester','');
+INSERT INTO `game` (`match_no`, `team1`, `team2`, `match_date`, `venue`, `match_result`) VALUES (47,'2ND','3RD','2019-05-16 15:00:00','Edgbaston, Birmingham','');
+INSERT INTO `game` (`match_no`, `team1`, `team2`, `match_date`, `venue`, `match_result`) VALUES (48,'TBC','TBC','2019-05-17 15:00:00','Lord\'s Cricket Ground, London','');
 
 
 INSERT INTO `dailyprediction` (`userid`, `match_no`, `prediction`) VALUES (1,44,'INDIA');

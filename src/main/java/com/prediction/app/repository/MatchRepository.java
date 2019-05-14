@@ -27,4 +27,7 @@ public interface MatchRepository extends JpaRepository<Game, Integer> {
 	List<Game> findByMatchDateBetween(Date dateBegin, Date dateEnd);
 	@Query(nativeQuery = true,value = "call getMatchByVenue(:venueIn,:teamNo2)")   // call store procedure with arguments
     List<Game> getMatchByVenue(@Param("venueIn")String venue,@Param("teamNo2")String team2);
+	
+	@Query(nativeQuery = true,value = "SELECT distinct team1 FROM game where team1 not in ('1ST','2ND','TBC') order by team1")   // call store procedure with arguments
+    List<String> getAllTeams();
 }

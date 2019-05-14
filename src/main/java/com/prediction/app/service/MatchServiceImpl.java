@@ -60,4 +60,11 @@ public class MatchServiceImpl implements MatchService{
 	public List<Game> findMatchByVenue(String venue, String team2) {
 		return matchRepository.getMatchByVenue(venue,team2);
 	}
+
+	@Override
+	public List<String> getAllTeams() {
+		return matchRepository.getAllTeams();
+	}
+	
+	
 }

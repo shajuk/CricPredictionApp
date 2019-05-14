@@ -1,12 +1,10 @@
 package com.prediction.app.controller;
 
-import javax.annotation.PreDestroy;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -81,9 +79,9 @@ public class PredictionController {
 	@RequestMapping(value = {"/prediction/home"}, method = RequestMethod.GET)
 	public ModelAndView home(){
 		ModelAndView model=new ModelAndView();
-		Authentication auth=SecurityContextHolder.getContext().getAuthentication();
-		User user=userService.findUserByUsername(auth.getName());
-		model.addObject("userName", user.getFirstname());
+		PredictionForm predictionForm = prepareModelAndForm(model);
+		model.addObject("predictionForm",predictionForm);
+		predictionFacade.prepareAndGetPredictionForm(predictionForm);
 		model.setViewName("home/home");
 		return model;
 	}
@@ -113,13 +111,10 @@ public class PredictionController {
 	@RequestMapping(value = {"/prediction/dp"}, method = RequestMethod.GET)
 	public ModelAndView dailyPrediction(){
 		ModelAndView model=new ModelAndView();
-		Authentication auth=SecurityContextHolder.getContext().getAuthentication();
-		User user=userService.findUserByUsername(auth.getName());
-		model.addObject("userName", user.getFirstname());
-		PredictionForm predictionForm=getPredictionForm();
-		predictionForm.setUser(user);
-		predictionFacade.prepareAndGetPredictionForm(predictionForm);
+		PredictionForm predictionForm = prepareModelAndForm(model);
 		model.addObject("predictionForm",predictionForm);
+		predictionFacade.prepareAndGetPredictionForm(predictionForm);
+		
 		model.setViewName("home/dailyprediction");
 		return model;
 	}
@@ -142,4 +137,76 @@ public class PredictionController {
 		return model;
 	}
 	
+	@RequestMapping(value = {"/prediction/sf"}, method = RequestMethod.GET)
+	public ModelAndView semiFinalPrediction(){
+		ModelAndView model=new ModelAndView();
+		PredictionForm predictionForm = prepareModelAndForm(model);
+		model.addObject("predictionForm",predictionForm);
+		predictionFacade.prepareAndGetPredictionForm(predictionForm);
+		model.setViewName("home/semifinalist");
+		return model;
+	}
+	
+	@RequestMapping(value = {"/prediction/sf"}, method = RequestMethod.POST)
+	public ModelAndView semiFinalPrediction(@Valid @ModelAttribute PredictionForm predictionForm, 
+			BindingResult bindingResult){
+		ModelAndView model=new ModelAndView();
+		Authentication auth=SecurityContextHolder.getContext().getAuthentication();
+		User user=userService.findUserByUsername(auth.getName());
+		model.addObject("userName", user.getFirstname());
+		model.addObject("predictionForm",predictionForm);
+		predictionFacade.validateSemiFinalists(predictionForm,bindingResult);
+		model.setViewName("home/semifinalist");
+		if(!bindingResult.hasErrors()){
+			predictionFacade.saveSemiFinalPredictions(predictionForm);
+			model.addObject("successMessage", "Your selections are saved successfully !");
+		}
+		return model;
+	}
+	
+	@RequestMapping(value = {"/prediction/fnl"}, method = RequestMethod.GET)
+	public ModelAndView finalPrediction(){
+		ModelAndView model=new ModelAndView();
+		PredictionForm predictionForm = prepareModelAndForm(model);
+		model.addObject("predictionForm",predictionForm);
+		predictionFacade.prepareAndGetPredictionForm(predictionForm);
+		model.setViewName("home/finalist");
+		return model;
+	}
+	
+	@RequestMapping(value = {"/prediction/fnl"}, method = RequestMethod.POST)
+	public ModelAndView saveFinalPrediction(@Valid @ModelAttribute PredictionForm predictionForm, 
+			BindingResult bindingResult){
+		ModelAndView model=new ModelAndView();
+		Authentication auth=SecurityContextHolder.getContext().getAuthentication();
+		User user=userService.findUserByUsername(auth.getName());
+		model.addObject("userName", user.getFirstname());
+		model.addObject("predictionForm",predictionForm);
+		predictionFacade.validateFinalists(predictionForm,bindingResult);
+		model.setViewName("home/finalist");
+		if(!bindingResult.hasErrors()){
+			predictionFacade.saveFinalPredictions(predictionForm);
+			model.addObject("successMessage", "Your selections are saved successfully !");
+		}
+		return model;
+	}
+	
+	@RequestMapping(value = {"/prediction/fixture"}, method = RequestMethod.GET)
+	public ModelAndView getFixture() {
+		ModelAndView model=new ModelAndView();
+		PredictionForm predictionForm = prepareModelAndForm(model);
+		predictionFacade.getMatchFixture(predictionForm);
+		model.addObject("predictionForm",predictionForm);
+		model.setViewName("home/fixture");
+		return model;
+	}
+	
+	private PredictionForm prepareModelAndForm(ModelAndView model) {
+		Authentication auth=SecurityContextHolder.getContext().getAuthentication();
+		User user=userService.findUserByUsername(auth.getName());
+		model.addObject("userName", user.getFirstname());
+		PredictionForm predictionForm=getPredictionForm();
+		predictionForm.setUser(user);
+		return predictionForm;
+	}
 }

@@ -349,6 +349,11 @@ public class CricPredictionAppApplicationTests {
 		dailyPredictionService.updateDailyPredictionPoints(3, 10, -3, "SRI LANKA");
 	}
 	
+	@Test
+	public void getAllTeams() {
+		List<String> teams=matchService.getAllTeams();
+		teams.forEach(team ->System.out.println(""+team));
+	}
 	
 	@Test
 	public void findDailyPredictionByMatch(){
@@ -569,7 +574,7 @@ public class CricPredictionAppApplicationTests {
 	
 	@Test
 	public void isPredictionFreezed(){
-		System.out.println(predictionAppUtils.isPredictionFreezed(new Date()));
+		System.out.println(predictionAppUtils.isDailyPredictionFreezed(new Date()));
 	}
 	
 	@Autowired

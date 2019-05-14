@@ -50,7 +50,7 @@
     <!-- Wrapper for slides -->
     <div class="carousel-inner" role="listbox">
       <div class="item active">
-       <a th:href="@{/prediction/dp}"> <img src="https://placehold.it/1200x400?text=IMAGE" alt="Image"> </a>
+       <a th:href="@{/prediction/dp}"> <img src="http://52.41.251.138/sites/default/files/2019-03/IPL_vs_ICC_World_Cup_2019_0.jpg" height="250px" alt="Image"> </a>
           <!-- <img src="/images/1.png" alt="Image"> -->
             
       </div>
@@ -76,26 +76,22 @@
 </div>
   
 <div class="container text-center">    
-  <h3>This is the home page </h3><br>
+  <br>
   <div class="row">
     <div class="col-sm-4">
-      <img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">
-      <p>Current Project</p>
+      <a th:href="@{/prediction/sf}"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image"></a>
+      <p>Predict Semi-Finalists</p>
     </div>
     <div class="col-sm-4"> 
-      <img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">
-      <p>Project 2</p>    
+      <a th:href="@{/prediction/fnl}"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image"></a>
+      <p>Predict Finalists</p>  
     </div>
     <div class="col-sm-4"> 
-      <img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">
-      <p>Project 2</p>    
+      <a th:href="@{/prediction/home}"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image"></a>
+       <p>Predict Winner</p> 
     </div>
   </div>
 </div><br>
-
-<footer class="container-fluid text-center">
-  <p>Footer Text</p>
-</footer>
 
 </body>
 </html>

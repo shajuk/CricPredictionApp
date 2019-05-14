@@ -11,16 +11,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindingResult;
 
 import com.prediction.app.model.Dailyprediction;
 import com.prediction.app.model.DailypredictionId;
+import com.prediction.app.model.Finalprediction;
 import com.prediction.app.model.Game;
 import com.prediction.app.model.Prediction;
 import com.prediction.app.model.PredictionForm;
+import com.prediction.app.model.Semifinalprediction;
 import com.prediction.app.model.User;
 import com.prediction.app.service.DailyPredictionService;
+import com.prediction.app.service.FinalPredictionService;
 import com.prediction.app.service.MatchService;
+import com.prediction.app.service.SemiFinalPredictionService;
 import com.prediction.app.service.UserService;
 import com.prediction.app.utils.PredictionAppUtils;
 
@@ -32,6 +37,9 @@ import com.prediction.app.utils.PredictionAppUtils;
 @Component("predictionFacade")
 public class PredictionFacade {
 
+	private static String MATCH_BEGIN_DATE = "13/05/2019 00:00:00";
+	private static String MATCH_END_DATE = "14/07/2019 23:59:59";	
+	
 	@Autowired
 	MatchService matchService;
 	
@@ -41,6 +49,11 @@ public class PredictionFacade {
 	@Autowired
 	PredictionAppUtils predictionAppUtils;
 	
+	@Autowired
+	SemiFinalPredictionService semiFinalPredictionService;
+	
+	@Autowired
+	FinalPredictionService finalPredictionService;
 	
 	public void prepareAndGetPredictionForm(PredictionForm form) {
 		form.getPredictions().clear();
@@ -57,7 +70,11 @@ public class PredictionFacade {
 			prediction.setTeam2(game.getTeam2());
 			prediction.setVenue(game.getVenue());
 			form.getPredictions().add(prediction);
+			form.setMainPredictionFreezed(isMainPredictionFreezed(game.getMatchNo()));
 		}
+		
+		List<String> teams=matchService.getAllTeams();
+		form.getTeams().addAll(teams);
 	}
 
 
@@ -73,7 +90,7 @@ public class PredictionFacade {
 			if(predictionAppUtils.isNullOrEmpty(prediction.getChoice())){
 				isEmptyChoice=true;
 			}
-			if(predictionAppUtils.isPredictionFreezed(prediction.getMatchDate())){
+			if(predictionAppUtils.isDailyPredictionFreezed(prediction.getMatchDate())){
 				isPredictionFrozen=true;
 			}
 		}
@@ -102,6 +119,70 @@ public class PredictionFacade {
 				dailyPrediction.setPrediction(prediction.getChoice());
 			}
 			dailyPredictionService.saveDailyPrediction(dailyPrediction);
+		}
+	}
+
+	private boolean isMainPredictionFreezed(int matchNo) {
+		return matchNo > 22 ? true: false;
+	}
+	
+	public void validateSemiFinalists(@Valid PredictionForm predictionForm, BindingResult bindingResult) {
+		if(predictionForm.getSelectedSemiFinalists().size() < 4) {
+			bindingResult.reject("error.semiunderselection","Please select 4 teams!");
+		}
+		
+		if(predictionForm.getSelectedSemiFinalists().size() > 4) {
+			bindingResult.reject("error.semioverselection","Please select only 4 teams!");
+		}
+	}
+	
+	public void validateFinalists(@Valid PredictionForm predictionForm, BindingResult bindingResult) {
+		if(predictionForm.getSelectedFinalists().size() < 2) {
+			bindingResult.reject("error.finalunderselection","Please select 2 teams!");
+		}
+		
+		if(predictionForm.getSelectedFinalists().size() > 2) {
+			bindingResult.reject("error.finaloverselection","Please select only 2 teams!");
+		}
+	}
+
+	public void validateChampion(@Valid PredictionForm predictionForm, BindingResult bindingResult) {
+		if(predictionAppUtils.isNullOrEmpty(predictionForm.getSelectedChampion())) {
+			bindingResult.reject("error.emptychampselection","Please select your favourite team!");
+		}
+	}
+
+	public void saveSemiFinalPredictions(@Valid PredictionForm predictionForm) {
+		Semifinalprediction semifinalprediction=semiFinalPredictionService.findSemiFinalPredictionByUser(predictionForm.getUser());
+		if(null==semifinalprediction) {
+			semiFinalPredictionService.saveSemiFinalPrediction(new Semifinalprediction(predictionForm.getUser(),predictionForm.getSelectedSemiFinalists().get(0),predictionForm.getSelectedSemiFinalists().get(1),predictionForm.getSelectedSemiFinalists().get(2),predictionForm.getSelectedSemiFinalists().get(3)));
+		}else {
+			semifinalprediction.setTeam1(predictionForm.getSelectedSemiFinalists().get(0));
+			semifinalprediction.setTeam2(predictionForm.getSelectedSemiFinalists().get(1));
+			semifinalprediction.setTeam3(predictionForm.getSelectedSemiFinalists().get(2));
+			semifinalprediction.setTeam4(predictionForm.getSelectedSemiFinalists().get(3));
+			semiFinalPredictionService.saveSemiFinalPrediction(semifinalprediction);
+		}
+		
+	}
+	
+	public void saveFinalPredictions(@Valid PredictionForm predictionForm) {
+		Finalprediction finalprediction=finalPredictionService.findFinalPredictionByUser(predictionForm.getUser());
+		if(null==finalprediction) {
+			finalPredictionService.saveFinalPrediction(new Finalprediction(predictionForm.getUser(),predictionForm.getSelectedFinalists().get(0),predictionForm.getSelectedFinalists().get(1)));
+		}else {
+			finalprediction.setTeam1(predictionForm.getSelectedFinalists().get(0));
+			finalprediction.setTeam2(predictionForm.getSelectedFinalists().get(1));
+			finalPredictionService.saveFinalPrediction(finalprediction);
+		}
+		
+	}
+	
+	public void getMatchFixture(PredictionForm scheduleForm) {
+		scheduleForm.getGames().clear();
+		List<Game> matches=matchService.findMatchByMatchDateBetween(predictionAppUtils.getMatchBeginDate(MATCH_BEGIN_DATE), predictionAppUtils.getMatchEndDate(MATCH_END_DATE));
+		if(!CollectionUtils.isEmpty(matches)) {
+			scheduleForm.getGames().addAll(matches);
 		}
 	}
 	

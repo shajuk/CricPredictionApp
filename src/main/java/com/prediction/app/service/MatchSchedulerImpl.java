@@ -11,11 +11,13 @@ public class MatchSchedulerImpl implements MatchScheduler {
 	@Override
 	/* 
 	 * 1st argument - second
-	 * 2nd argument - minute
+	 * 2nd argument - minute 
 	 * 3rd argument - hour in 24 hours format
 	 * 4th argument - day of month
 	 * 5th argument - month
 	 * 6th argument -  day(s) of week
+	 * star means every
+	 * 0 0/10 * * * *"
 	 */
 	@Scheduled(cron="0 0 1 * * *", zone="Asia/Calcutta")
 	public void scheduleMatch() {

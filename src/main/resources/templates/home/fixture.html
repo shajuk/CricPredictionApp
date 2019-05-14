@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	 xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Prediction Game</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  <script type="text/javascript">
+  	$( document ).ready(function() {
+	});
+  	
+  	
+  </script>
+  <style>
+    /* Remove the navbar's default margin-bottom and rounded borders */ 
+    .navbar {
+      margin-bottom: 0;
+      border-radius: 0;
+    }
+    
+    /* Add a gray background color and some padding to the footer */
+    footer {
+      background-color: #f2f2f2;
+      padding: 25px;
+    }
+    
+  .carousel-inner img {
+      width: 100%; /* Set width to 100% */
+      margin: auto;
+      min-height:200px;
+  }
+  
+  div.pts{
+  	padding-top: 10px;
+  }
+  
+  div.matchInfo{
+  	padding: 20px 0px 10px 0px;
+  	font-weight: bold;
+  }
+
+  /* Hide the carousel text when the screen is less than 600 pixels wide */
+  @media (max-width: 600px) {
+    .carousel-caption {
+      display: none; 
+    }
+  }
+  </style>
+</head>
+<body>
+	<div th:insert="/home/topnav :: navbar"></div>
+
+	<div class="container text-center">
+	  <form th:action="@{/prediction/fixture}" th:object="${predictionForm}" method="get">
+		  <div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
+		    	<p th:each="err : ${#fields.errors('*')}" th:text="${err}"></p>    
+		  </div>
+	  
+	    	<div class="alert alert-success" role="alert" th:if="${successMessage}" th:utext="${successMessage}"></div>
+	  
+		  	<div th:each="match, itemStat : *{games}" class="row">
+	  			<div class="matchInfo">Match No <span th:utext="${match.getMatchNo()}"></span>, <span th:utext="${match.getTeam1()}"></span> VS <span th:utext="${match.getTeam2()}"></span>
+	  			 ,<span th:utext="${match.getVenue()}"></span>, <span th:utext="${match.getMatchDate()}"></span> IST	  			
+	  			</div>
+		    	<div class="col-sm-4">
+			    	<img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">
+			   		
+			   		<label th:text="${match.getTeam1()}"></label>	
+		    	</div>
+		    	<div class="col-sm-4"> 
+		      		<img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">
+		      		
+			  		<label th:text="${match.getTeam2()}"></label>
+		    	</div>		    
+		  	</div>	
+	    </form>
+	</div>
+</body>
+</html>

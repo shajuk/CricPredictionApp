@@ -98,7 +98,7 @@ public class PredictionAppUtils {
 	 * @param prediction
 	 * @return
 	 */
-	public boolean isPredictionFreezed(Date matchDateTime) {
+	public boolean isDailyPredictionFreezed(Date matchDateTime) {
 		Date oneHourBackDateTime=getTimeOneHourBack(matchDateTime);
 		LocalDateTime oneHourBackLocalDateTime = LocalDateTime.parse(getStringFromDate(oneHourBackDateTime), dateTimeFormatter);
 		return (LocalDateTime.now().isAfter(oneHourBackLocalDateTime));
@@ -114,5 +114,23 @@ public class PredictionAppUtils {
 		 cal.add(Calendar.HOUR, -1);
 		 Date oneHourBack = cal.getTime();
 		return oneHourBack;
+	}
+	
+	public Date getMatchBeginDate(String matchdateBegin){
+		try {
+			return formatter.parse(matchdateBegin);
+		} catch (ParseException e) {
+			matchdateBegin=null;
+		}
+		return null;
+	}
+	
+	public Date getMatchEndDate(String matchdateEnd){
+		try {
+			return formatter.parse(matchdateEnd);
+		} catch (ParseException e) {
+			matchdateEnd=null;
+		}
+		return null;
 	}
 }
