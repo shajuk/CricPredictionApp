@@ -70,6 +70,7 @@
 <div class="container text-center">    
  
   <form th:action="@{/prediction/fnl}" th:object="${predictionForm}" method="post">
+  <div class="matchInfo"></div>
   <div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
     	<p th:each="err : ${#fields.errors('*')}" th:text="${err}"></p>    
   </div>

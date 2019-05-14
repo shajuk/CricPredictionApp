@@ -69,7 +69,7 @@
 
 <div class="container text-center">    
  
-  <form th:action="@{/prediction/sf}" th:object="${predictionForm}" method="post">
+  <form th:action="@{/prediction/chmp}" th:object="${predictionForm}" method="post">
    <div class="matchInfo"></div>
   <div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
     	<p th:each="err : ${#fields.errors('*')}" th:text="${err}"></p>    
@@ -78,14 +78,11 @@
     <div class="alert alert-success" role="alert" th:if="${successMessage}" th:utext="${successMessage}"></div>
 
 	  <div th:each="team, itemStat : *{teams}" th:class="${itemStat.index  == 4 or itemStat.index  == 9 } ?  row : ''">
-			 
-		    <div class="col-sm-2" style="text-align: left;">
-		    	<div > <img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image"></div>
-		    	<input type="checkbox"  th:field="*{selectedSemiFinalists}"
-        					th:value="${team}" />
-		   		 <label th:for="${#ids.prev('selectedSemiFinalists')}" th:text="${team}"></label> 
+			 <div class="col-sm-2"  style="text-align: left;"> 
+			 		<div> <img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image"></div>
+		      		<input type="radio" th:field="*{selectedChampion}" th:value="${team}"  />
+			   		<label th:text="${team}">				</label>	
 		    </div>
-		     
 	  </div>
 	  
 	  <div class="row pts">
