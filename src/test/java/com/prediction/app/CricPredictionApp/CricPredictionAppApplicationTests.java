@@ -570,6 +570,7 @@ public class CricPredictionAppApplicationTests {
 	public void printDates(){
 		System.out.println(predictionAppUtils.getYesterdayBeginDateTime());
 		System.out.println(predictionAppUtils.getYesterdayEndDateTime());
+		predictionAppUtils.getMatchResults();
 	}
 	
 	@Test

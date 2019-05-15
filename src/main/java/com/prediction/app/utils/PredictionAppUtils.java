@@ -3,6 +3,7 @@
  */
 package com.prediction.app.utils;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -11,6 +12,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.stereotype.Component;
 
 import com.prediction.app.model.Prediction;
@@ -132,5 +137,23 @@ public class PredictionAppUtils {
 			matchdateEnd=null;
 		}
 		return null;
+	}
+	
+	public void getMatchResults(){
+		try{
+			// System.setProperty("http.proxyHost", "127.0.0.1");
+	         //   System.setProperty("http.proxyPort", "3128");   
+			Document doc=Jsoup
+            .connect("http://www.bcci.tv/icc-cricket-world-cup-2015/match/11")
+            .userAgent("Mozilla/5.0").get();
+			Elements elements=doc.select("div.summary");
+			
+			for(Element summary:elements){
+				System.out.println(summary.text());
+			}
+			
+		}catch(IOException e){
+			
+		}
 	}
 }
